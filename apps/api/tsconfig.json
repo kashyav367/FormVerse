@@ -4,10 +4,9 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "moduleResolution": "Node",
-    "module": "CommonJS",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
 
-    // We don't need these for our final build
     "declarationMap": false,
     "declaration": false,
     "sourceMap": false
