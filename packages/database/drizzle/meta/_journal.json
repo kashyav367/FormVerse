@@ -15,6 +15,13 @@
       "when": 1779233085088,
       "tag": "0001_even_lizard",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779402105115,
+      "tag": "0002_hesitant_madame_masque",
+      "breakpoints": true
     }
   ]
 }
