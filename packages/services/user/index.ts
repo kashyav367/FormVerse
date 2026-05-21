@@ -1,7 +1,6 @@
 import { randomBytes, createHmac } from 'node:crypto'
 import * as JWT from 'jsonwebtoken'
-import { db } from "@repo/database"
-import { eq } from "drizzle-orm"
+import { db, eq } from "@repo/database"
 import { env } from "../env"
 import { usersTable } from "@repo/database/models/user"
 import { type CreateUserWithEmailAndPasswordInputType, GenerateUserTokenPayloadType, SignInWithEmailAndPasswordInputType, createUserWithEmailAndPasswordInput, generateUserTokenPayload, signInWithEmailAndPasswordInput } from "./model";
@@ -30,7 +29,7 @@ class UserService {
     }
     } 
     
-    private async getUserInfoById(id : string){
+    public async getUserInfoById(id : string){
      const user = await db.select({
         id: usersTable.id,
         email: usersTable.email,
@@ -92,10 +91,10 @@ class UserService {
         }    
       }
 
-      public async verifyAndDecodeToken(token: string){
+      public async verifyAndDecodeUserToken(token: string){
         const { id } = await this.verifyUserToken(token)
         const userInfo = await this.getUserInfoById(id)
-        return { ...userInfo }
+        return { id }
       }
 
 }

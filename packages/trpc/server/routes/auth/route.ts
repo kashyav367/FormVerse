@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPasswordInput, signInWithEmailAndPasswordInput } from "@repo/services/user/model";
-import { publicProcedure, router } from "../../trpc";
+import { authenticatedProcedure, publicProcedure, router } from "../../trpc";
 import { generatePath } from "../../utils/path-generator";
 import { createUserWithEmailAndPasswordInputModel, createUserWithEmailAndPasswordOutputModel, getLoggedInUserInputModel, getLoggedInUserOutputModel, signInWithEmailAndPasswordInputModel, signInWithEmailAndPasswordOutputModel } from "./model";
 import { userService } from "../../services";
@@ -55,7 +55,7 @@ export const authRouter = router({
       }),
 
 
-      getLoggedInUserInfo : publicProcedure.meta({
+      getLoggedInUserInfo : authenticatedProcedure.meta({
         openapi : {
             method : "GET",
             path : getPath("/getLoggedInUserInfo"),
@@ -65,10 +65,9 @@ export const authRouter = router({
       .input(getLoggedInUserInputModel)
       .output(getLoggedInUserOutputModel)
       .query(async ({ ctx }) => {
-         const userToken = getAuthenticationCookie(ctx)
-         if(!userToken) throw new Error(`user is not logged in`)
+        
          
-         const { id, email, fullName, profileImageUrl } = await userService.verifyAndDecodeToken(userToken)   
+         const { id, email, fullName, profileImageUrl } = await userService.getUserInfoById(ctx.user.id)   
 
           return {  
             id, email, fullName, profileImageUrl
