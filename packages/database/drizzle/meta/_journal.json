@@ -22,6 +22,13 @@
       "when": 1779402105115,
       "tag": "0002_hesitant_madame_masque",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779402806339,
+      "tag": "0003_living_hobgoblin",
+      "breakpoints": true
     }
   ]
 }
