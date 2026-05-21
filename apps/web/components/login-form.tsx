@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { cn } from "~/lib/utils"
 import { Button } from "~/components/ui/button"
 import {
@@ -24,6 +25,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   const{ signInWithEmailAndPasswordAsync } = useSignIn()
+  const router = useRouter()
   type FormData = {
     email: string
     password: string
@@ -38,7 +40,8 @@ export function LoginForm({
      const { id } = await signInWithEmailAndPasswordAsync({
         email: data.email,
         password: data.password
-      })
+      });
+      router.replace("/dashboard")
     }
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

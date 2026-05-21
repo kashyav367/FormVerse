@@ -12,6 +12,7 @@ import { Input } from "~/components/ui/input"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { trpc } from "~/trpc/client"
 import { useSignup } from "~/hooks/api/auth"
+import { useRouter } from "next/navigation"
 
 type SignupFormValues = {
   name: string
@@ -26,19 +27,13 @@ export function SignupForm({
 }: React.ComponentProps<"form">) {
 
    const {createUserWithEmailAndPasswordAsync}  = useSignup();
-
+   const router = useRouter()
   const {
     register,
     handleSubmit,
   } = useForm<SignupFormValues>()
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (values) => {
-    try {
-      if (values.password !== values.confirmPassword) {
-        alert("Passwords do not match")
-        return
-      }
-
       console.log(values)
 
       const { id } =
@@ -49,10 +44,8 @@ export function SignupForm({
         })
 
       console.log(`User created with ID: ${id}`)
+      router.replace("/dashboard")
 
-    } catch (error) {
-      console.error(error)
-    }
   }
 
   return (
