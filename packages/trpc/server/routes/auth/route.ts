@@ -1,9 +1,9 @@
 import { createUserWithEmailAndPasswordInput, signInWithEmailAndPasswordInput } from "@repo/services/user/model";
 import { publicProcedure, router } from "../../trpc";
 import { generatePath } from "../../utils/path-generator";
-import { createUserWithEmailAndPasswordInputModel, createUserWithEmailAndPasswordOutputModel, signInWithEmailAndPasswordInputModel, signInWithEmailAndPasswordOutputModel } from "./model";
+import { createUserWithEmailAndPasswordInputModel, createUserWithEmailAndPasswordOutputModel, getLoggedInUserInputModel, getLoggedInUserOutputModel, signInWithEmailAndPasswordInputModel, signInWithEmailAndPasswordOutputModel } from "./model";
 import { userService } from "../../services";
-import { setAuthenticationCookie } from "../../utils/cookie";
+import { getAuthenticationCookie, setAuthenticationCookie } from "../../utils/cookie";
 import { set } from "zod";
 
 
@@ -17,7 +17,9 @@ export const authRouter = router({
      { method: "POST",
        path: getPath("/createUserWithEmailAndPassword"), 
        tags : TAGS 
-      }}).input(createUserWithEmailAndPasswordInputModel).output(createUserWithEmailAndPasswordOutputModel)
+      }})
+      .input(createUserWithEmailAndPasswordInputModel)
+      .output(createUserWithEmailAndPasswordOutputModel)
       .mutation( async ({input, ctx} ) => {
        const { fullName, email, password} = input
 
@@ -50,6 +52,27 @@ export const authRouter = router({
       return {
         id
       }
+      }),
+
+
+      getLoggedInUserInfo : publicProcedure.meta({
+        openapi : {
+            method : "GET",
+            path : getPath("/getLoggedInUserInfo"),
+            tags : TAGS
+        }
       })
+      .input(getLoggedInUserInputModel)
+      .output(getLoggedInUserOutputModel)
+      .query(async ({ ctx }) => {
+         const userToken = getAuthenticationCookie(ctx)
+         if(!userToken) throw new Error(`user is not logged in`)
+         
+         const { id, email, fullName, profileImageUrl } = await userService.verifyAndDecodeToken(userToken)   
+
+          return {  
+            id, email, fullName, profileImageUrl
+          }
+       })   
 
 });

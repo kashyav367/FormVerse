@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 
 export const createUserWithEmailAndPasswordInputModel= z.object({
      fullName : z.string().describe("name of the user"),
@@ -21,3 +21,11 @@ export const signInWithEmailAndPasswordInputModel = z.object({
 export const signInWithEmailAndPasswordOutputModel = z.object({
  id: z.string().describe("id of the user created"),
 })    
+
+export const getLoggedInUserInputModel = z.undefined()
+export const getLoggedInUserOutputModel = z.object({
+     id: z.string().describe("id of the user created"),
+     email : z.string().describe("email of the user"),
+     fullName : z.string().describe("name of the user"),
+     profileImageUrl : z.string().describe(" image of the user").optional().nullable()
+})     
