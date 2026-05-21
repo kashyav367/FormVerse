@@ -4,7 +4,7 @@ import { db } from "@repo/database"
 import { eq } from "drizzle-orm"
 import { env } from "../env"
 import { usersTable } from "@repo/database/models/user"
-import { type CreateUserWithEmailAndPasswordInputType, GenerateUserTokenPayloadType, createUserWithEmailAndPasswordInput, generateUserTokenPayload } from "./model";
+import { type CreateUserWithEmailAndPasswordInputType, GenerateUserTokenPayloadType, SignInWithEmailAndPasswordInputType, createUserWithEmailAndPasswordInput, generateUserTokenPayload, signInWithEmailAndPasswordInput } from "./model";
 class UserService {
 
     private async getUserByEmail(email: string){
@@ -20,6 +20,10 @@ class UserService {
             return { token } 
     }
 
+    private async  generateHash(salt: string, password: string){
+        return createHmac("sha256", salt).update(password).digest("hex")
+    }
+
     public async createUserWithEmailAndPassword(payload: CreateUserWithEmailAndPasswordInputType ){
          const { fullName, email, password} = await createUserWithEmailAndPasswordInput.parseAsync(payload)
 
@@ -29,7 +33,7 @@ class UserService {
 
          //calculate salt and has the password
          const salt = randomBytes(16).toString('hex')
-         const hash = createHmac('sha256', salt).update(password).digest('hex')   
+         const hash = await this.generateHash(salt, password)
 
          // create user in DB
         const userInsertResult =  await db.insert(usersTable).values({ email, fullName, password : hash, salt}).returning({
@@ -40,10 +44,31 @@ class UserService {
            const userId = userInsertResult[0].id
            const{ token } = await this.generateUserToken({ id : userId }) 
         return {
-            id: userInsertResult[0].id,
+            id: userId,
             token
         }
-    }
+    };
+
+    public async signInWithEmailAndPassword(payload: SignInWithEmailAndPasswordInputType){
+        const {email, password} = await signInWithEmailAndPasswordInput.parseAsync(payload)
+
+        const existingUser =  await  this.getUserByEmail(email)
+        if(!existingUser) throw new Error(`User with email ${email} does not exists`)
+
+        if(!existingUser.password || !existingUser.salt) throw new Error(`Invalid authentication method`)
+
+
+        const hash = await this.generateHash(existingUser.salt, password)
+
+        if(hash !== existingUser.password) throw new Error(`Invalid email address or  password`)
+
+        const { token } = await this.generateUserToken({ id : existingUser.id })
+        return {
+            id: existingUser.id,
+            token
+        }    
+}
+
 }
 
 export default UserService;

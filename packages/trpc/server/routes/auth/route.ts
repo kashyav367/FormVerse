@@ -1,9 +1,10 @@
-import { createUserWithEmailAndPasswordInput } from "@repo/services/user/model";
+import { createUserWithEmailAndPasswordInput, signInWithEmailAndPasswordInput } from "@repo/services/user/model";
 import { publicProcedure, router } from "../../trpc";
 import { generatePath } from "../../utils/path-generator";
-import { createUserWithEmailAndPasswordInputModel, createUserWithEmailAndPasswordOutputModel } from "./model";
+import { createUserWithEmailAndPasswordInputModel, createUserWithEmailAndPasswordOutputModel, signInWithEmailAndPasswordInputModel, signInWithEmailAndPasswordOutputModel } from "./model";
 import { userService } from "../../services";
 import { setAuthenticationCookie } from "../../utils/cookie";
+import { set } from "zod";
 
 
 
@@ -29,6 +30,26 @@ export const authRouter = router({
        return {
         id
        }
+      }),
+
+      signInWithEmailAndPassword: publicProcedure.meta(
+        { openapi : {
+            method : "POST",
+            path : getPath("/signInWithEmailAndPassword"),
+            tags : TAGS
+        }}
+      ).input(signInWithEmailAndPasswordInputModel).output(signInWithEmailAndPasswordOutputModel)
+      .mutation(async ({ input,ctx }) => {
+       const { email, password } = input
+       const { id, token } = await userService.signInWithEmailAndPassword({
+        email, password  
+      })
+
+      setAuthenticationCookie(ctx, token)
+
+      return {
+        id
+      }
       })
 
 });
