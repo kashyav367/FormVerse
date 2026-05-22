@@ -1,126 +1,212 @@
-"use client"
+"use client";
 
-import { Button } from "~/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card"
-import { Input } from "~/components/ui/input"
+import { useState } from "react";
+import { useCreateForm, useListForms } from "~/hooks/api/form";
+
+import { Button } from "~/components/ui/button";
+
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table"
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription
+} from "~/components/ui/dialog";
+
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Textarea } from "~/components/ui/textarea";
 
 export default function FormsPage() {
-  const forms = [
-    {
-      id: 1,
-      name: "Job Application Form",
-      responses: 23,
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Feedback Form",
-      responses: 15,
-      status: "Draft",
-    },
-    {
-      id: 3,
-      name: "Event Registration",
-      responses: 48,
-      status: "Active",
-    },
-  ]
+  const [open, setOpen] = useState(false);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const { createForm, isPending } = useCreateForm();
+
+  const { forms, isLoading } = useListForms();
+
+  const handleCreate = (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    console.log("Sending:", {
+      title,
+      description,
+    });
+
+    createForm(
+      {
+        title,
+        description,
+      },
+      {
+        onSuccess: (data) => {
+          console.log(
+            "SUCCESS:",
+            data
+          );
+
+          setOpen(false);
+          setTitle("");
+          setDescription("");
+        },
+
+        onError: (err) => {
+          console.log(
+            "ERROR:",
+            err
+          );
+        },
+      }
+    );
+  };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      
-      {/* Top Section */}
-      <div className="flex items-center justify-between">
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        
         <div>
-          <h1 className="text-3xl font-bold">Forms</h1>
+          <h1 className="text-3xl font-bold">
+            Forms
+          </h1>
+
           <p className="text-muted-foreground">
-            Create and manage your forms
+            Manage your forms
           </p>
         </div>
 
-        <Button>Create Form</Button>
+        <Dialog
+          open={open}
+          onOpenChange={setOpen}
+        >
+          <DialogTrigger asChild>
+            <Button>
+              Create Form
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent>
+
+            <DialogHeader>
+
+              <DialogTitle>
+                Create Form
+              </DialogTitle>
+
+              <DialogDescription>
+                Create a new form
+              </DialogDescription>
+
+            </DialogHeader>
+
+            <form
+              onSubmit={handleCreate}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <Label>
+                  Title
+                </Label>
+
+                <Input
+                  value={title}
+                  onChange={(e) =>
+                    setTitle(
+                      e.target.value
+                    )
+                  }
+                  placeholder="Job Form"
+                />
+              </div>
+
+              <div className="space-y-2">
+
+                <Label>
+                  Description
+                </Label>
+
+                <Textarea
+                  value={description}
+                  onChange={(e) =>
+                    setDescription(
+                      e.target.value
+                    )
+                  }
+                  placeholder="Form description..."
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="w-full"
+              >
+                {isPending
+                  ? "Creating..."
+                  : "Create"}
+              </Button>
+
+            </form>
+
+          </DialogContent>
+        </Dialog>
       </div>
 
-      {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
+      {isLoading ? (
+        <p>
+          Loading...
+        </p>
+      ) : forms?.length ? (
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+          {forms.map((form) => (
+            <Card key={form.id}>
+
+              <CardHeader>
+
+                <CardTitle>
+                  {form.title}
+                </CardTitle>
+
+              </CardHeader>
+
+              <CardContent>
+
+                <p className="text-sm text-muted-foreground">
+                  {form.description ||
+                    "No description"}
+                </p>
+
+              </CardContent>
+
+            </Card>
+          ))}
+
+        </div>
+
+      ) : (
         <Card>
-          <CardHeader>
-            <CardTitle>Total Forms</CardTitle>
-          </CardHeader>
 
-          <CardContent>
-            <h2 className="text-3xl font-bold">12</h2>
+          <CardContent className="p-8 text-center">
+
+            No forms found
+
           </CardContent>
+
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Responses</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <h2 className="text-3xl font-bold">235</h2>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Active Forms</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <h2 className="text-3xl font-bold">8</h2>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Search */}
-      <Input placeholder="Search forms..." />
-
-      {/* Forms Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Forms</CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Form Name</TableHead>
-                <TableHead>Responses</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {forms.map((form) => (
-                <TableRow key={form.id}>
-                  <TableCell>{form.name}</TableCell>
-                  <TableCell>{form.responses}</TableCell>
-                  <TableCell>{form.status}</TableCell>
-
-                  <TableCell>
-                    <Button variant="outline">
-                      View
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-
-          </Table>
-        </CardContent>
-      </Card>
+      )}
     </div>
-  )
+  );
 }
