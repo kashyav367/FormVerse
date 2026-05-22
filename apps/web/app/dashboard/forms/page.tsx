@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { useCreateForm, useListForms } from "~/hooks/api/form";
 
 import { Button } from "~/components/ui/button";
@@ -15,15 +16,24 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogDescription
 } from "~/components/ui/dialog";
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
 
 export default function FormsPage() {
   const [open, setOpen] = useState(false);
@@ -31,19 +41,16 @@ export default function FormsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const { createForm, isPending } = useCreateForm();
+  const { createForm, isPending } =
+    useCreateForm();
 
-  const { forms, isLoading } = useListForms();
+  const { forms, isLoading } =
+    useListForms();
 
   const handleCreate = (
     e: React.FormEvent
   ) => {
     e.preventDefault();
-
-    console.log("Sending:", {
-      title,
-      description,
-    });
 
     createForm(
       {
@@ -51,22 +58,10 @@ export default function FormsPage() {
         description,
       },
       {
-        onSuccess: (data) => {
-          console.log(
-            "SUCCESS:",
-            data
-          );
-
+        onSuccess: () => {
           setOpen(false);
           setTitle("");
           setDescription("");
-        },
-
-        onError: (err) => {
-          console.log(
-            "ERROR:",
-            err
-          );
         },
       }
     );
@@ -74,8 +69,9 @@ export default function FormsPage() {
 
   return (
     <div className="p-6">
+
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        
         <div>
           <h1 className="text-3xl font-bold">
             Forms
@@ -97,9 +93,7 @@ export default function FormsPage() {
           </DialogTrigger>
 
           <DialogContent>
-
             <DialogHeader>
-
               <DialogTitle>
                 Create Form
               </DialogTitle>
@@ -107,14 +101,13 @@ export default function FormsPage() {
               <DialogDescription>
                 Create a new form
               </DialogDescription>
-
             </DialogHeader>
 
             <form
               onSubmit={handleCreate}
               className="space-y-4"
             >
-              <div className="space-y-2">
+              <div>
                 <Label>
                   Title
                 </Label>
@@ -122,16 +115,12 @@ export default function FormsPage() {
                 <Input
                   value={title}
                   onChange={(e) =>
-                    setTitle(
-                      e.target.value
-                    )
+                    setTitle(e.target.value)
                   }
-                  placeholder="Job Form"
                 />
               </div>
 
-              <div className="space-y-2">
-
+              <div>
                 <Label>
                   Description
                 </Label>
@@ -143,70 +132,120 @@ export default function FormsPage() {
                       e.target.value
                     )
                   }
-                  placeholder="Form description..."
                 />
               </div>
 
               <Button
                 type="submit"
-                disabled={isPending}
                 className="w-full"
+                disabled={isPending}
               >
                 {isPending
                   ? "Creating..."
                   : "Create"}
               </Button>
-
             </form>
-
           </DialogContent>
         </Dialog>
       </div>
 
-      {isLoading ? (
-        <p>
-          Loading...
-        </p>
-      ) : forms?.length ? (
+      {/* Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            Your Forms
+          </CardTitle>
+        </CardHeader>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <CardContent>
 
-          {forms.map((form) => (
-            <Card key={form.id}>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : forms?.length ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    Title
+                  </TableHead>
 
-              <CardHeader>
+                  <TableHead>
+                    Description
+                  </TableHead>
 
-                <CardTitle>
-                  {form.title}
-                </CardTitle>
+                  <TableHead>
+                    Created
+                  </TableHead>
 
-              </CardHeader>
+                  <TableHead>
+                    Updated
+                  </TableHead>
 
-              <CardContent>
+                  <TableHead>
+                    Actions
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
 
-                <p className="text-sm text-muted-foreground">
-                  {form.description ||
-                    "No description"}
-                </p>
+              <TableBody>
+                {forms.map((form) => (
+                  <TableRow
+                    key={form.id}
+                  >
+                    <TableCell className="font-medium">
+                      {form.title}
+                    </TableCell>
 
-              </CardContent>
+                    <TableCell>
+                      {form.description}
+                    </TableCell>
 
-            </Card>
-          ))}
+                    <TableCell>
+                      {form.createdAt
+                        ? new Date(
+                            form.createdAt
+                          ).toLocaleDateString()
+                        : "-"}
+                    </TableCell>
 
-        </div>
+                    <TableCell>
+                      {form.updatedAt
+                        ? new Date(
+                            form.updatedAt
+                          ).toLocaleDateString()
+                        : "-"}
+                    </TableCell>
 
-      ) : (
-        <Card>
+                    <TableCell className="space-x-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                      >
+                        Edit
+                      </Button>
 
-          <CardContent className="p-8 text-center">
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
 
-            No forms found
+                  </TableRow>
+                ))}
+              </TableBody>
 
-          </CardContent>
+            </Table>
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              No forms found
+            </div>
+          )}
 
-        </Card>
-      )}
+        </CardContent>
+      </Card>
+
     </div>
   );
 }
