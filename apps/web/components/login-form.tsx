@@ -1,107 +1,193 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { cn } from "~/lib/utils"
-import { Button } from "~/components/ui/button"
+import { cn } from "~/lib/utils";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "~/components/ui/card"
+} from "~/components/ui/card";
+
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "~/components/ui/field"
-import { Input } from "~/components/ui/input"
-import { useForm, Controller } from "react-hook-form"
-import { useSignIn } from "~/hooks/api/auth"
+} from "~/components/ui/field";
+
+import { Input } from "~/components/ui/input";
+import { useSignIn } from "~/hooks/api/auth";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
+type SignInFormValues = {
+  email: string;
+  password: string;
+};
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const{ signInWithEmailAndPasswordAsync } = useSignIn()
-  const router = useRouter()
-  type FormData = {
-    email: string
-    password: string
-  }
 
-  const { control, handleSubmit } = useForm<FormData>({
-    defaultValues: { email: "", password: "" },
-  })
+  const { signInUserWithEmailAndPasswordAsync } =
+    useSignIn();
 
-  const onSubmit = async (data: FormData) => {
-    console.log(data)
-     const { id } = await signInWithEmailAndPasswordAsync({
-        email: data.email,
-        password: data.password
-      });
-      router.replace("/dashboard")
-    }
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "all",
+  });
+
+  const onSubmit: SubmitHandler<SignInFormValues> =
+    async (values) => {
+      try {
+
+        await signInUserWithEmailAndPasswordAsync({
+          email: values.email,
+          password: values.password,
+        });
+
+        console.log("Login Success");
+
+        router.push("/dashboard");
+
+      } catch (error) {
+        console.log("Login Failed:", error);
+      }
+    };
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn(
+        "flex flex-col gap-6",
+        className
+      )}
+      {...props}
+    >
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+
+          <CardTitle>
+            Login to your account
+          </CardTitle>
+
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your email below to login
           </CardDescription>
+
         </CardHeader>
+
         <CardContent>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
+
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="m@example.com"
-                      required
-                      {...field}
-                    />
-                  )}
+                <FieldLabel htmlFor="email">
+                  Email
+                </FieldLabel>
+
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
                 />
+
+                {errors.email && (
+                  <p className="text-sm text-red-500">
+                    {errors.email.message}
+                  </p>
+                )}
               </Field>
+
               <Field>
                 <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+
+                  <FieldLabel htmlFor="password">
+                    Password
+                  </FieldLabel>
+
                   <a
                     href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    className="ml-auto text-sm hover:underline"
                   >
-                    Forgot your password?
+                    Forgot Password?
                   </a>
+
                 </div>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <Input id="password" type="password" required {...field} />
-                  )}
+
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message:
+                        "Password must be at least 6 characters",
+                    },
+                  })}
                 />
+
+                {errors.password && (
+                  <p className="text-sm text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
+
               </Field>
+
               <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
+                <Button
+                  className="w-full"
+                  type="submit"
+                >
+                  Login
+                </Button>
+              </Field>
+
+              <Field>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  type="button"
+                >
                   Login with Google
                 </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription>
               </Field>
+
+              <FieldDescription className="text-center">
+
+                Don&apos;t have an account?{" "}
+
+                <a
+                  href="/signup"
+                  className="underline"
+                >
+                  Sign up
+                </a>
+
+              </FieldDescription>
+
             </FieldGroup>
           </form>
+
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

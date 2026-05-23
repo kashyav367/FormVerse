@@ -1,16 +1,44 @@
-import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { usersTable } from "./user";
+import {
+  pgTable,
+  uuid,
+  text,
+  timestamp,
+  boolean,
+} from "drizzle-orm/pg-core";
 
+export const formTable = pgTable("forms", {
 
-export const formsTable = pgTable('forms', {
-    id: uuid('id').primaryKey().defaultRandom(),
+  id: uuid("id")
+    .defaultRandom()
+    .primaryKey(),
 
-    title: varchar('title', { length: 55 }).notNull(),
-    description: varchar('description', {length: 300}),
+  title: text("title")
+    .notNull(),
 
-    createdBy: uuid('created_by').references(() => usersTable.id),
+  description: text("description"),
 
-    createdAt: timestamp('created_at').defaultNow(),
-    updatedAt: timestamp('updated_at').$onUpdate(() => new Date())
+  createdBy: uuid("created_by")
+    .notNull(),
 
-})
+  isPublished: boolean("is_published")
+    .default(false)
+    .notNull(),
+
+  visibility: text("visibility", {
+    enum: [
+      "PUBLIC",
+      "UNLISTED"
+    ]
+  })
+    .default("UNLISTED")
+    .notNull(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull(),
+
+});

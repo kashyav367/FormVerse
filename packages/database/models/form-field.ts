@@ -1,42 +1,45 @@
 import {
-  boolean,
-  numeric,
-  pgEnum,
   pgTable,
-  text,
-  timestamp,
-  unique,
   uuid,
-  varchar,
+  text,
+  boolean,
+  integer,
 } from "drizzle-orm/pg-core";
-import { formsTable } from "./form";
-
-export const fieldEnum = pgEnum("fieldEnum", ["TEXT", "NUMBER", "EMAIL", "YES_NO", "PASSWORD"]);
 
 export const formsFields = pgTable(
-  "formsFields",
+  "form_fields",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
+    id: uuid("id")
+      .defaultRandom()
+      .primaryKey(),
 
-    label: varchar("label", { length: 100 }).notNull(),
-    labelKey: varchar("label_key", { length: 100 }).notNull(),
+    formId: uuid("form_id")
+      .notNull(),
 
-    placeholder: text("placeholder"),
+    label: text("label")
+      .notNull(),
 
-    isRequired: boolean("is_required").default(false),
+    labelKey: text("label_key")
+      .notNull(),
 
-    index: numeric("index", { scale: 2 }).notNull().unique(),
+    type: text("type")
+      .notNull(),
 
-    type: fieldEnum("type").notNull(),
+    options: text(
+      "options"
+    ),
 
-    formId: uuid("form_id").references(() => formsTable.id),
+    index: integer("index")
+      .notNull(),
 
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
-  },
-  (table) => {
-    return {
-      uniqueFormIdAndIndex: unique().on(table.formId, table.index),
-    };
-  },
+    placeholder: text(
+      "placeholder"
+    ),
+
+    isRequired: boolean(
+      "is_required"
+    )
+      .default(false)
+      .notNull(),
+  }
 );

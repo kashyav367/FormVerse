@@ -1,118 +1,267 @@
-"use client"
+"use client";
 
-import { cn } from "~/lib/utils"
-import { Button } from "~/components/ui/button"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { Button } from "~/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+
 import {
   Field,
+  FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
-} from "~/components/ui/field"
-import { Input } from "~/components/ui/input"
-import { useForm, SubmitHandler } from "react-hook-form"
-import { trpc } from "~/trpc/client"
-import { useSignup } from "~/hooks/api/auth"
-import { useRouter } from "next/navigation"
+} from "~/components/ui/field";
+
+import { Input } from "~/components/ui/input";
+import { useSignup } from "~/hooks/api/auth";
 
 type SignupFormValues = {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
-export function SignupForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+export function SignupForm(
+  props: React.ComponentProps<typeof Card>
+) {
+  const router = useRouter();
 
-   const {createUserWithEmailAndPasswordAsync}  = useSignup();
-   const router = useRouter()
+  const {
+    createUserWithEmailAndPasswordAsync,
+    isPending,
+  } = useSignup();
+
   const {
     register,
     handleSubmit,
-  } = useForm<SignupFormValues>()
+    watch,
+    formState: { errors },
+  } = useForm<SignupFormValues>({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    mode: "all",
+  });
 
-  const onSubmit: SubmitHandler<SignupFormValues> = async (values) => {
-      console.log(values)
+  const password = watch("password");
 
+  const onSubmit: SubmitHandler<
+    SignupFormValues
+  > = async (values) => {
+    try {
       const { id } =
         await createUserWithEmailAndPasswordAsync({
-          email: values.email,
-          fullName: values.name,
+          email: values.email.toLowerCase(),
+          fullName: values.fullName,
           password: values.password,
-        })
+        });
 
-      console.log(`User created with ID: ${id}`)
-      router.replace("/dashboard")
+      console.log("Signup success:", id);
 
-  }
+      router.push("/login");
+
+    } catch (error) {
+      console.error(
+        "Signup Failed:",
+        error
+      );
+    }
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className={cn("flex flex-col gap-6", className)}
-      {...props}
-    >
-      <FieldGroup>
-        <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">
-            Create your account
-          </h1>
+    <Card {...props}>
+      <CardHeader>
+        <CardTitle>
+          Create an account
+        </CardTitle>
 
-          <p className="text-sm text-balance text-muted-foreground">
-            Fill in the form below to create your account
-          </p>
-        </div>
+        <CardDescription>
+          Enter your information below
+        </CardDescription>
+      </CardHeader>
 
-        <Field>
-          <FieldLabel>Full Name</FieldLabel>
-          <Input
-            placeholder="John Doe"
-            {...register("name")}
-            required
-          />
-        </Field>
+      <CardContent>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <FieldGroup>
 
-        <Field>
-          <FieldLabel>Email</FieldLabel>
-          <Input
-            type="email"
-            placeholder="m@example.com"
-            {...register("email")}
-            required
-          />
-        </Field>
+            <Field>
+              <FieldLabel htmlFor="name">
+                Full Name
+              </FieldLabel>
 
-        <Field>
-          <FieldLabel>Password</FieldLabel>
-          <Input
-            type="password"
-            {...register("password")}
-            required
-          />
-        </Field>
+              <Input
+                id="name"
+                placeholder="John Doe"
+                {...register(
+                  "fullName",
+                  {
+                    required:
+                      "Full name is required",
+                  }
+                )}
+              />
 
-        <Field>
-          <FieldLabel>Confirm Password</FieldLabel>
-          <Input
-            type="password"
-            {...register("confirmPassword")}
-            required
-          />
-        </Field>
+              {errors.fullName && (
+                <p className="text-sm text-red-500">
+                  {
+                    errors.fullName
+                      .message
+                  }
+                </p>
+              )}
+            </Field>
 
-        <Field>
-          <Button type="submit">
-            Create Account
-          </Button>
-        </Field>
+            <Field>
+              <FieldLabel htmlFor="email">
+                Email
+              </FieldLabel>
 
-        <FieldSeparator>
-          Or continue with
-        </FieldSeparator>
+              <Input
+                id="email"
+                type="email"
+                placeholder="xyz@gmail.com"
+                {...register(
+                  "email",
+                  {
+                    required:
+                      "Email is required",
+                  }
+                )}
+              />
 
-      </FieldGroup>
-    </form>
-  )
+              <FieldDescription>
+                We'll use this to
+                contact you.
+              </FieldDescription>
+
+              {errors.email && (
+                <p className="text-sm text-red-500">
+                  {errors.email.message}
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel htmlFor="password">
+                Password
+              </FieldLabel>
+
+              <Input
+                id="password"
+                type="password"
+                {...register(
+                  "password",
+                  {
+                    required:
+                      "Password is required",
+                    minLength: {
+                      value: 8,
+                      message:
+                        "Minimum 8 characters required",
+                    },
+                  }
+                )}
+              />
+
+              <FieldDescription>
+                Must be at least 8
+                characters long
+              </FieldDescription>
+
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {
+                    errors.password
+                      .message
+                  }
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <FieldLabel htmlFor="confirm-password">
+                Confirm Password
+              </FieldLabel>
+
+              <Input
+                id="confirm-password"
+                type="password"
+                {...register(
+                  "confirmPassword",
+                  {
+                    required:
+                      "Confirm password is required",
+                    validate: (
+                      value
+                    ) =>
+                      value ===
+                        password ||
+                      "Passwords do not match",
+                  }
+                )}
+              />
+
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {
+                    errors
+                      .confirmPassword
+                      .message
+                  }
+                </p>
+              )}
+            </Field>
+
+            <Field>
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={isPending}
+              >
+                {isPending
+                  ? "Creating..."
+                  : "Create Account"}
+              </Button>
+            </Field>
+
+            <Field>
+              <Button
+                variant="outline"
+                className="w-full"
+                type="button"
+              >
+                Sign up with Google
+              </Button>
+            </Field>
+
+            <FieldDescription className="text-center">
+              Already have an
+              account?{" "}
+              <Link
+                href="/login"
+                className="underline"
+              >
+                Sign in
+              </Link>
+            </FieldDescription>
+
+          </FieldGroup>
+        </form>
+      </CardContent>
+    </Card>
+  );
 }
