@@ -13,8 +13,6 @@ z.enum([
 
 "CHECKBOX",
 
-"RADIO",
-
 "SELECT",
 
 "DATE",

@@ -44,28 +44,35 @@ router({
       ),
 
   listSubmissions:
-    publicProcedure
+publicProcedure
 
-      .input(
-        z.object({
+.input(
+z.object({
 
-          formId:
-            z.string()
-              .uuid(),
+formId:
+z.string()
+.uuid(),
 
-        })
-      )
+})
+)
 
-      .query(
-        async ({ input }) => {
+.query(
+async ({ input }) => {
 
-          return await
-          formSubmissionService
-          .getSubmissions(
-            input.formId
-          );
 
-        }
-      ),
+
+const data=
+
+await formSubmissionService
+.getSubmissions(
+input.formId
+);
+
+
+
+return data;
+
+}
+),
 
 });

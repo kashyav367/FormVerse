@@ -1,11 +1,16 @@
 import { trpc } from "~/trpc/client";
 
-export const useCreateForm = () => {
+
+/* ---------------- CREATE FORM ---------------- */
+
+/* ---------------- CREATE FORM ---------------- */
+
+export const useCreateForm=()=>{
 
 const utils=
 trpc.useUtils();
 
-const {
+const{
 
 mutateAsync:
 createFormAsync,
@@ -32,13 +37,42 @@ status,
 .useMutation({
 
 onSuccess:
-async()=>{
+async(data)=>{
 
-await utils
+console.log(
+"Form created:",
+data
+);
+
+await Promise.all([
+
+utils
 .form
-.invalidate();
+.listForm
+.invalidate(),
+
+utils
+.form
+.dashboardStats
+.invalidate(),
+
+utils
+.form
+.invalidate()
+
+]);
 
 },
+
+onError:
+(error)=>{
+
+console.error(
+"Create Form Error:",
+error
+);
+
+}
 
 });
 
@@ -67,9 +101,22 @@ status,
 };
 
 
-export const useListForms=()=>{
+/* ---------------- LIST FORMS ---------------- */
 
-const {
+export const useListForms=(filters?:{
+
+search?:string;
+
+visibility?:
+"PUBLIC"|
+"UNLISTED";
+
+isPublished?:
+boolean;
+
+})=>{
+
+const{
 
 data:
 forms=[],
@@ -86,15 +133,15 @@ status,
 .listForm
 .useQuery(
 
-undefined,
+filters,
 
 {
 
 staleTime:
-1000 * 60 * 5,
+1000*60*5,
 
 gcTime:
-1000 * 60 * 10,
+1000*60*10,
 
 refetchOnWindowFocus:
 false,
@@ -126,12 +173,48 @@ status,
 };
 
 
+
+/* ---------------- DASHBOARD STATS ---------------- */
+
+export const useDashboardStats=()=>{
+
+const{
+
+data:
+stats,
+
+isLoading,
+
+error,
+
+}=
+
+trpc.form
+.dashboardStats
+.useQuery();
+
+return{
+
+stats,
+
+isLoading,
+
+error
+
+};
+
+};
+
+
+
+/* ---------------- DELETE ---------------- */
+
 export const useDeleteForm=()=>{
 
 const utils=
 trpc.useUtils();
 
-const {
+const{
 
 mutateAsync:
 deleteFormAsync,
@@ -156,6 +239,11 @@ await utils
 .listForm
 .invalidate();
 
+await utils
+.form
+.dashboardStats
+.invalidate();
+
 },
 
 });
@@ -175,6 +263,11 @@ status,
 };
 
 };
+
+
+
+/* ---------------- UPDATE ---------------- */
+
 export const useUpdateForm=()=>{
 
 const utils=
@@ -188,6 +281,7 @@ updateFormAsync,
 isPending
 
 }=
+
 trpc.form
 .updateForm
 .useMutation({
@@ -195,7 +289,9 @@ trpc.form
 onSuccess:
 async()=>{
 
-await utils.form.invalidate();
+await utils
+.form
+.invalidate();
 
 }
 
@@ -210,6 +306,10 @@ isPending
 
 };
 
+
+
+/* ---------------- GET FORM ---------------- */
+
 export const useGetForm=(
 formId:string
 )=>{
@@ -221,6 +321,7 @@ data:form,
 isLoading
 
 }=
+
 trpc.form
 .getForm
 .useQuery({
@@ -238,6 +339,10 @@ isLoading
 
 };
 
+
+
+/* ---------------- PUBLIC FORMS ---------------- */
+
 export const usePublicForms=()=>{
 
 const{
@@ -249,6 +354,7 @@ isLoading,
 error
 
 }=
+
 trpc.form
 .listPublicForms
 .useQuery();
@@ -260,6 +366,54 @@ forms,
 isLoading,
 
 error
+
+};
+
+};
+
+
+
+/* ---------------- DUPLICATE ---------------- */
+
+export const useDuplicateForm=()=>{
+
+const utils=
+trpc.useUtils();
+
+const{
+
+mutateAsync:
+duplicateFormAsync,
+
+isPending
+
+}=
+
+trpc.form
+.duplicateForm
+.useMutation({
+
+onSuccess:
+async()=>{
+
+await utils
+.form
+.listForm
+.invalidate();
+
+await utils
+.form
+.dashboardStats
+.invalidate();
+
+}
+
+});
+
+return{
+
+duplicateFormAsync,
+isPending
 
 };
 

@@ -33,6 +33,23 @@ export const formTable = pgTable("forms", {
     .default("UNLISTED")
     .notNull(),
 
+    
+theme: text("theme")
+.default("Aurora")
+.notNull(),
+
+template: text("template")
+.default("BLANK")
+.notNull(),
+
+category: text("category")
+.default("Feedback")
+.notNull(),
+
+icon: text("icon")
+.default("📝")
+.notNull(),
+
   createdAt: timestamp("created_at")
     .defaultNow()
     .notNull(),
@@ -42,3 +59,5 @@ export const formTable = pgTable("forms", {
     .notNull(),
 
 });
+
+

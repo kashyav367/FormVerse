@@ -5,9 +5,13 @@ z.object({
 
 title:
 z.string()
+.min(
+1,
+"Title required"
+)
 .max(55)
 .describe(
-"Title of the form"
+"Form title"
 ),
 
 description:
@@ -15,10 +19,46 @@ z.string()
 .max(300)
 .optional()
 .describe(
-"Description of the form"
+"Form description"
 ),
 
+visibility:
+z.enum([
+"PUBLIC",
+"UNLISTED"
+])
+.optional(),
+
+theme:
+z.string()
+.optional()
+.describe(
+"Selected theme"
+),
+
+template:
+z.string()
+.optional()
+.describe(
+"Selected template"
+),
+
+category:
+z.string()
+.optional()
+.describe(
+"Form category"
+),
+
+icon:
+z.string()
+.optional()
+.describe(
+"Form icon"
+)
+
 });
+
 
 export const createFormOutputModel=
 z.object({
@@ -27,6 +67,7 @@ id:
 z.string()
 
 });
+
 
 export const updateFormInputModel=
 z.object({
@@ -48,6 +89,7 @@ z.enum([
 
 });
 
+
 export const updateFormOutputModel=
 z.object({
 
@@ -65,6 +107,7 @@ z.enum([
 
 });
 
+
 export const getFormInputModel=
 z.object({
 
@@ -73,6 +116,7 @@ z.string()
 .uuid()
 
 });
+
 
 export const getFormOutputModel=
 z.object({
@@ -94,9 +138,30 @@ visibility:
 z.enum([
 "PUBLIC",
 "UNLISTED"
-])
+]),
+
+theme:
+z.string()
+.nullable()
+.optional(),
+
+template:
+z.string()
+.nullable()
+.optional(),
+
+category:
+z.string()
+.nullable()
+.optional(),
+
+icon:
+z.string()
+.nullable()
+.optional()
 
 });
+
 
 export const listFormOutputModel=
 z.array(
@@ -128,7 +193,27 @@ visibility:
 z.enum([
 "PUBLIC",
 "UNLISTED"
-])
+]),
+
+theme:
+z.string()
+.nullable()
+.optional(),
+
+template:
+z.string()
+.nullable()
+.optional(),
+
+category:
+z.string()
+.nullable()
+.optional(),
+
+icon:
+z.string()
+.nullable()
+.optional()
 
 })
 
@@ -139,15 +224,112 @@ z.array(
 
 z.object({
 
+id:z.string(),
+
+title:z.string(),
+
+description:
+z.string().nullable(),
+
+theme:
+z.string().optional(),
+
+template:
+z.string().optional(),
+
+category:
+z.string().optional(),
+
+icon:
+z.string().optional()
+
+})
+
+);
+
+
+export const duplicateFormInputModel=
+z.object({
+
+formId:
+z.string()
+
+.uuid()
+
+.describe(
+"ID of form to duplicate"
+)
+
+});
+
+
+export const duplicateFormOutputModel=
+z.object({
+
+id:
+z.string()
+
+.describe(
+"Duplicated form ID"
+)
+
+});
+
+
+/* Dashboard */
+
+export const listFormInputModel=
+z.object({
+
+search:
+z.string()
+.optional(),
+
+visibility:
+z.enum([
+"PUBLIC",
+"UNLISTED"
+])
+.optional(),
+
+isPublished:
+z.boolean()
+.optional()
+
+});
+
+
+export const dashboardStatsOutputModel=
+z.object({
+
+totalForms:
+z.number(),
+
+publishedForms:
+z.number(),
+
+unlistedForms:
+z.number(),
+
+totalResponses:
+z.number()
+
+});
+
+
+export const recentActivityOutputModel=
+z.array(
+
+z.object({
+
 id:
 z.string(),
 
-title:
+action:
 z.string(),
 
-description:
-z.string()
-.nullable()
+createdAt:
+z.date()
 
 })
 

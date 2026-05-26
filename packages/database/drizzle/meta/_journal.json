@@ -22,6 +22,20 @@
       "when": 1779570354197,
       "tag": "0002_easy_sister_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779666846156,
+      "tag": "0003_striped_johnny_storm",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779814637069,
+      "tag": "0004_massive_junta",
+      "breakpoints": true
     }
   ]
 }

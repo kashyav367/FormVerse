@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { trpc } from "~/trpc/client";
 
 export const useSignup = () => {
@@ -64,10 +67,14 @@ export const useSignup = () => {
 
 };
 
+
 export const useSignIn = () => {
 
   const utils =
     trpc.useUtils();
+
+  const router =
+    useRouter();
 
   const {
 
@@ -102,6 +109,14 @@ export const useSignIn = () => {
               .getLoggedInUserInfo
               .invalidate();
 
+            console.log(
+              "Login Success"
+            );
+
+            router.replace(
+              "/dashboard"
+            );
+
           },
 
       });
@@ -127,6 +142,7 @@ export const useSignIn = () => {
   };
 
 };
+
 
 export const useUser = () => {
 

@@ -1,23 +1,23 @@
-"use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation"
-import { useUser } from "~/hooks/api/auth";
+import Navbar from "~/components/landing/navbar";
+import Hero from "~/components/landing/hero";
+import Features from "~/components/landing/feature-strip";
+import Pricing from "~/components/landing/pricing";
+import Footer from "~/components/landing/footer";
 
-export default  function Home() {
-  const { user } = useUser();
- const router = useRouter()
-
-  useEffect(() =>  {
-    if(user && user.id){
-     router.replace("/dashboard")
-    }else{
-      router.replace("/login")
-    }
-  },[user, router])
-
+export default function HomePage() {
   return (
-    <main className="min-h-screen min-w-screen flex justify-center items-center">
-      <div>{JSON.stringify(user,null,2)}</div>
+    <main
+      className="
+      bg-[#f9f3ee]
+      min-h-screen
+      overflow-x-hidden
+      "
+    >
+      <Navbar />
+      <Hero />
+      <Features />
+      <Pricing />
+      <Footer />
     </main>
   );
 }

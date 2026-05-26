@@ -1,30 +1,40 @@
 import { authenticatedProcedure, router } from "../../trpc";
 import { generatePath } from "../../utils/path-generator";
-import {
-  createFormInputModel,
-  createFormOutputModel,
-  listFormOutputModel,
-  updateFormInputModel,
-  updateFormOutputModel,
-  getFormInputModel,
-  getFormOutputModel,
-  publicFormsOutputModel
-}
-from "./model";
-
 import { formService } from "../../services";
-
 import z from "zod";
+
+import {
+
+createFormInputModel,
+createFormOutputModel,
+
+listFormOutputModel,
+listFormInputModel,
+
+updateFormInputModel,
+updateFormOutputModel,
+
+getFormInputModel,
+getFormOutputModel,
+
+publicFormsOutputModel,
+
+duplicateFormInputModel,
+duplicateFormOutputModel,
+
+dashboardStatsOutputModel
+
+} from "./model";
 
 const TAGS=["Forms"];
 
 const getPath=
-generatePath(
-"/form"
-);
+generatePath("/form");
 
 export const formRouter=
 router({
+
+/* ---------------- CREATE ---------------- */
 
 createForm:
 
@@ -35,13 +45,8 @@ authenticatedProcedure
 openapi:{
 
 method:"POST",
-
-path:getPath(
-"/createForm"
-),
-
+path:getPath("/createForm"),
 tags:TAGS,
-
 protect:true
 
 }
@@ -62,19 +67,31 @@ input,
 ctx
 })=>{
 
-const{
-title,
-description
-}=input;
-
-const {id}=
+const{id}=
 
 await formService
 .createForm({
 
-title,
+title:
+input.title,
 
-description,
+description:
+input.description,
+
+theme:
+input.theme,
+
+template:
+input.template,
+
+visibility:
+input.visibility,
+
+category:
+input.category,
+
+icon:
+input.icon,
 
 createdBy:
 ctx.user.id
@@ -90,6 +107,9 @@ id
 }
 ),
 
+
+/* ---------------- LIST ---------------- */
+
 listForm:
 
 authenticatedProcedure
@@ -99,13 +119,8 @@ authenticatedProcedure
 openapi:{
 
 method:"GET",
-
-path:getPath(
-"/listForm"
-),
-
+path:getPath("/listForm"),
 tags:TAGS,
-
 protect:true
 
 }
@@ -113,7 +128,7 @@ protect:true
 })
 
 .input(
-z.undefined()
+listFormInputModel
 )
 
 .output(
@@ -121,19 +136,34 @@ listFormOutputModel
 )
 
 .query(
-async({ctx})=>{
+async({
+ctx,
+input
+})=>{
 
 return await
 formService
 .listFormByUserId({
 
 userId:
-ctx.user.id
+ctx.user.id,
+
+search:
+input?.search,
+
+visibility:
+input?.visibility,
+
+isPublished:
+input?.isPublished
 
 });
 
 }
 ),
+
+
+/* ---------------- DELETE ---------------- */
 
 deleteForm:
 
@@ -144,13 +174,8 @@ authenticatedProcedure
 openapi:{
 
 method:"DELETE",
-
-path:getPath(
-"/deleteForm"
-),
-
+path:getPath("/deleteForm"),
 tags:TAGS,
-
 protect:true
 
 }
@@ -181,9 +206,7 @@ z.string()
 )
 
 .mutation(
-async({
-input
-})=>{
+async({input})=>{
 
 return await
 formService
@@ -197,6 +220,9 @@ input.formId
 }
 ),
 
+
+/* ---------------- UPDATE ---------------- */
+
 updateForm:
 
 authenticatedProcedure
@@ -206,13 +232,8 @@ authenticatedProcedure
 openapi:{
 
 method:"PATCH",
-
-path:getPath(
-"/updateForm"
-),
-
+path:getPath("/updateForm"),
 tags:TAGS,
-
 protect:true
 
 }
@@ -228,9 +249,7 @@ updateFormOutputModel
 )
 
 .mutation(
-async({
-input
-})=>{
+async({input})=>{
 
 return await
 formService
@@ -241,6 +260,9 @@ input
 }
 ),
 
+
+/* ---------------- GET SINGLE ---------------- */
+
 getForm:
 
 authenticatedProcedure
@@ -250,13 +272,8 @@ authenticatedProcedure
 openapi:{
 
 method:"GET",
-
-path:getPath(
-"/getForm"
-),
-
+path:getPath("/getForm"),
 tags:TAGS,
-
 protect:true
 
 }
@@ -272,9 +289,7 @@ getFormOutputModel
 )
 
 .query(
-async({
-input
-})=>{
+async({input})=>{
 
 return await
 formService
@@ -284,6 +299,9 @@ input.formId
 
 }
 ),
+
+
+/* ---------------- PUBLIC ---------------- */
 
 listPublicForms:
 
@@ -301,7 +319,103 @@ formService
 .getPublicForms();
 
 }
+),
+
+
+/* ---------------- DUPLICATE ---------------- */
+
+duplicateForm:
+
+authenticatedProcedure
+
+.meta({
+
+openapi:{
+
+method:"POST",
+
+path:getPath(
+"/duplicateForm"
+),
+
+tags:TAGS,
+
+protect:true
+
+}
+
+})
+
+.input(
+duplicateFormInputModel
 )
+
+.output(
+duplicateFormOutputModel
+)
+
+.mutation(
+async({
+input,
+ctx
+})=>{
+
+return await
+formService
+.duplicateForm({
+
+formId:
+input.formId,
+
+createdBy:
+ctx.user.id
 
 });
 
+}
+),
+
+
+/* ---------------- DASHBOARD STATS ---------------- */
+
+dashboardStats:
+
+authenticatedProcedure
+
+.meta({
+
+openapi:{
+
+method:"GET",
+
+path:getPath(
+"/dashboardStats"
+),
+
+tags:TAGS,
+
+protect:true
+
+}
+
+})
+
+.output(
+dashboardStatsOutputModel
+)
+
+.query(
+async({
+ctx
+})=>{
+
+return await
+formService
+.getDashboardStats(
+ctx.user.id
+);
+
+}
+)
+
+});

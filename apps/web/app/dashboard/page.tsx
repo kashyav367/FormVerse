@@ -1,77 +1,77 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import {
-Trash2,
-FileText,
-Compass
-}
-from "lucide-react";
 
 import {
-Button
-}
-from "~/components/ui/button";
+Trash2,
+Compass,
+Copy,
+Sparkles,
+FileText
+} from "lucide-react";
+
+import { Button } from "~/components/ui/button";
+
+import {
+AlertDialog,
+AlertDialogAction,
+AlertDialogCancel,
+AlertDialogContent,
+AlertDialogDescription,
+AlertDialogFooter,
+AlertDialogHeader,
+AlertDialogTitle,
+AlertDialogTrigger
+} from "~/components/ui/alert-dialog";
 
 import {
 useListForms,
-useDeleteForm
-}
-from "~/hooks/api/form";
+useDeleteForm,
+useDuplicateForm,
+useDashboardStats
+} from "~/hooks/api/form";
 
 export default function DashboardPage(){
 
-const{
+const [search,setSearch]=useState("");
 
+const{
 forms=[],
-
-isLoading,
-
-}=
-useListForms();
-
-const{
-
-deleteFormAsync,
-
-isPending:
-isDeleting,
-
-}=
-useDeleteForm();
-
-const handleDelete=
-async(
-formId:string
-)=>{
-
-const confirmed=
-confirm(
-"Delete this form?"
-);
-
-if(
-!confirmed
-)
-return;
-
-try{
-
-await deleteFormAsync({
-
-formId
-
+isLoading
+}=useListForms({
+search
 });
 
-}
+const{
+stats
+}=useDashboardStats();
 
-catch(error){
+const{
+deleteFormAsync,
+isPending:isDeleting
+}=useDeleteForm();
 
-console.log(
-error
-);
+const{
+duplicateFormAsync,
+isPending:isDuplicating
+}=useDuplicateForm();
 
-}
+const handleDelete=
+async(formId:string)=>{
+
+await deleteFormAsync({
+formId
+});
+
+};
+
+const handleDuplicate=
+async(formId:string)=>{
+
+await duplicateFormAsync({
+formId
+});
 
 };
 
@@ -80,24 +80,58 @@ return(
 <div
 className="
 min-h-screen
-bg-[#faf8fc]
-p-8"
+bg-[#f7f2ec]
+px-6
+py-8
+"
 >
+
+<div
+className="
+max-w-7xl
+mx-auto
+"
+>
+
+{/* HEADER */}
 
 <div
 className="
 flex
 justify-between
 items-center
-mb-10"
+mb-10
+"
 >
 
 <div>
 
+<div
+className="
+inline-flex
+items-center
+gap-2
+rounded-full
+bg-[#fde8e5]
+text-[#d25543]
+px-4
+py-2
+mb-5
+"
+>
+
+<Sparkles size={14}/>
+
+FormVerse
+
+</div>
+
 <h1
 className="
-text-4xl
-font-bold"
+text-[70px]
+font-serif
+font-bold
+"
 >
 
 Dashboard
@@ -107,44 +141,27 @@ Dashboard
 <p
 className="
 text-gray-500
-mt-2"
+mt-2
+"
 >
 
-Manage all your forms
-
-</p>
-
-<p
-className="
-text-sm
-text-gray-400
-mt-1"
->
-
-Total Forms:
-{" "}
-{forms.length}
+Manage your forms beautifully
 
 </p>
 
 </div>
 
-<div
-className="
-flex
-gap-3"
->
+<div className="flex gap-3">
 
-<Link
-href="/explore"
->
+<Link href="/explore">
 
 <Button
 variant="outline"
+className="rounded-full"
 >
 
 <Compass
-size={16}
+size={14}
 className="mr-2"
 />
 
@@ -158,7 +175,13 @@ Explore
 href="/dashboard/create"
 >
 
-<Button>
+<Button
+className="
+rounded-full
+bg-[#d25543]
+hover:bg-[#bf4938]
+"
+>
 
 + Create Form
 
@@ -170,74 +193,158 @@ href="/dashboard/create"
 
 </div>
 
+{/* SEARCH */}
+
+<input
+
+value={search}
+
+onChange={(e)=>{
+
+setSearch(
+e.target.value
+);
+
+}}
+
+placeholder="🔍 Search forms..."
+
+className="
+w-full
+h-14
+rounded-full
+border
+px-6
+mb-10
+bg-white
+"
+/>
+
+
+{/* STATS */}
+
+<div
+className="
+grid
+grid-cols-2
+lg:grid-cols-4
+gap-6
+mb-12
+"
+>
+
+{[
+
 {
+label:"Forms",
+value:stats?.totalForms||0
+},
 
-isLoading
+{
+label:"Published",
+value:stats?.publishedForms||0
+},
 
-?
+{
+label:"Unlisted",
+value:stats?.unlistedForms||0
+},
 
-(
+{
+label:"Responses",
+value:stats?.totalResponses||0
+}
 
-<div
-className="
-text-center
-py-20"
->
-
-<p
-className="
-text-gray-500
-text-lg"
->
-
-Loading forms...
-
-</p>
-
-</div>
-
-)
-
-:
-
-forms.length===0
-
-?
-
-(
+].map((item)=>(
 
 <div
+
+key={item.label}
+
 className="
 bg-white
-rounded-2xl
-border
+rounded-[30px]
+p-6
 shadow-sm
-p-12
-text-center"
->
+"
 
-<FileText
-size={45}
-className="
-mx-auto
-mb-4
-text-gray-400"
-/>
+>
 
 <h2
 className="
+text-4xl
 font-bold
-text-2xl"
+"
 >
 
-No Forms Found
+{item.value}
 
 </h2>
 
 <p
 className="
 text-gray-500
-mt-3"
+mt-2
+"
+>
+
+{item.label}
+
+</p>
+
+</div>
+
+))
+
+}
+
+</div>
+
+
+{/* EMPTY */}
+
+{
+
+!isLoading&&
+forms.length===0
+
+&&(
+
+<div
+className="
+bg-white
+rounded-[35px]
+p-16
+text-center
+"
+>
+
+<FileText
+size={60}
+className="
+mx-auto
+mb-5
+text-gray-400
+"
+/>
+
+<h2
+className="
+text-3xl
+font-serif
+font-bold
+"
+>
+
+No forms yet
+
+</h2>
+
+<p
+className="
+text-gray-500
+mt-3
+"
 >
 
 Create your first form
@@ -250,10 +357,12 @@ href="/dashboard/create"
 
 <Button
 className="
-mt-6"
+mt-6
+bg-[#d25543]
+"
 >
 
-+ Create Form
+Create Form
 
 </Button>
 
@@ -263,16 +372,18 @@ mt-6"
 
 )
 
-:
+}
 
-(
+
+{/* FORM CARDS */}
 
 <div
 className="
 grid
 md:grid-cols-2
-lg:grid-cols-3
-gap-6"
+xl:grid-cols-3
+gap-6
+"
 >
 
 {
@@ -282,55 +393,79 @@ forms.map(
 
 <div
 
-key={
-form.id
-}
+key={form.id}
 
 className="
 bg-white
-rounded-2xl
-border
+rounded-[35px]
 p-6
-relative
 shadow-sm
 hover:shadow-xl
-hover:-translate-y-1
 transition-all
-duration-300"
+border
+"
+
 >
 
-<button
-
-onClick={()=>
-
-handleDelete(
-form.id
-)
-
-}
-
-disabled={
-isDeleting
-}
-
+<div
 className="
-absolute
-top-4
-right-4
-text-red-500
-hover:text-red-700"
+flex
+justify-between
+mb-4
+"
 >
 
-<Trash2
-size={18}
-/>
+<span
+className={`
 
-</button>
+text-xs
+px-3
+py-1
+rounded-full
+
+${
+form.visibility==="PUBLIC"
+
+?
+
+"bg-green-100 text-green-700"
+
+:
+
+"bg-orange-100 text-orange-700"
+
+}
+
+`}
+>
+
+{
+form.visibility
+}
+
+</span>
+
+<span
+className="
+text-xs
+text-gray-400
+"
+>
+{form.responseCount || 0}
+Responses
+
+
+</span>
+
+</div>
+
 
 <h2
 className="
+text-2xl
+font-serif
 font-bold
-text-2xl"
+"
 >
 
 {form.title}
@@ -341,61 +476,37 @@ text-2xl"
 className="
 text-gray-500
 mt-3
-min-h-[50px]"
+min-h-[50px]
+"
 >
 
 {
-
-form.description ||
-
+form.description||
 "No description"
-
 }
 
 </p>
 
-{
-
-form.createdAt && (
-
-<p
-className="
-text-xs
-text-gray-400
-mt-3"
->
-
-Created:
-{" "}
-
-{
-
-new Date(
-form.createdAt
-)
-.toLocaleDateString()
-
-}
-
-</p>
-
-)
-
-}
 
 <div
 className="
-flex
-flex-wrap
+grid
+grid-cols-2
 gap-2
-mt-6"
+mt-6
+"
 >
 
 <Link
 href={`/dashboard/builder/${form.id}`}
 >
 
-<Button>
+<Button
+className="
+w-full
+bg-black
+"
+>
 
 Builder
 
@@ -403,49 +514,133 @@ Builder
 
 </Link>
 
+
 <Link
-href={`/form/${form.id}`}
+href={`/dashboard/responses/${form.id}`}
 >
 
 <Button
 variant="outline"
+className="
+w-full
+"
 >
 
-Public
+📊 Responses
 
 </Button>
 
 </Link>
 
-<Link
-href={`/responses/${form.id}`}
+
+<Button
+
+variant="outline"
+
+disabled={
+isDuplicating
+}
+
+onClick={()=>
+handleDuplicate(
+form.id
+)
+}
+
+>
+
+<Copy
+size={14}
+className="mr-2"
+/>
+
+Duplicate
+
+</Button>
+
+
+<AlertDialog>
+
+<AlertDialogTrigger
+asChild
 >
 
 <Button
-variant="secondary"
+variant="destructive"
 >
 
-Responses
+<Trash2
+size={14}
+className="mr-2"
+/>
+
+Delete
 
 </Button>
 
-</Link>
+</AlertDialogTrigger>
+
+<AlertDialogContent>
+
+<AlertDialogHeader>
+
+<AlertDialogTitle>
+
+Delete Form?
+
+</AlertDialogTitle>
+
+<AlertDialogDescription>
+
+This action cannot be undone.
+
+</AlertDialogDescription>
+
+</AlertDialogHeader>
+
+<AlertDialogFooter>
+
+<AlertDialogCancel>
+
+Cancel
+
+</AlertDialogCancel>
+
+<AlertDialogAction
+
+disabled={
+isDeleting
+}
+
+onClick={()=>
+handleDelete(
+form.id
+)
+}
+
+>
+
+Delete
+
+</AlertDialogAction>
+
+</AlertDialogFooter>
+
+</AlertDialogContent>
+
+</AlertDialog>
 
 </div>
 
 </div>
 
-)
-
-)
+))
 
 }
 
 </div>
 
-)
-
-}
+</div>
 
 </div>
 
