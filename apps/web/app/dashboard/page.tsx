@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "~/hooks/api/auth";
 import Link from "next/link";
 
 import {
@@ -33,6 +35,29 @@ useDashboardStats
 } from "~/hooks/api/form";
 
 export default function DashboardPage(){
+
+const router = useRouter();
+
+const {
+user,
+isLoading:isUserLoading
+} = useUser();
+
+useEffect(()=>{
+
+if(isUserLoading) return;
+
+if(!user){
+
+router.replace("/login");
+
+}
+
+},[
+user,
+isUserLoading,
+router
+]);    
 
 const [search,setSearch]=useState("");
 
@@ -74,6 +99,29 @@ formId
 });
 
 };
+
+if(isUserLoading){
+
+return(
+<div
+className="
+min-h-screen
+flex
+items-center
+justify-center
+"
+>
+Loading...
+</div>
+);
+
+}
+
+if(!user){
+
+return null;
+
+}
 
 return(
 

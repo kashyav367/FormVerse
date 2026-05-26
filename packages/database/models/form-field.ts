@@ -36,6 +36,11 @@ export const formsFields = pgTable(
       "placeholder"
     ),
 
+    // NEW
+    description: text(
+      "description"
+    ),
+
     isRequired: boolean(
       "is_required"
     )

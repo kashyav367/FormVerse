@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "~/hooks/api/auth";
 import Decorations from "./decorations";
 
 const FIELD_TYPES = [
@@ -19,6 +21,25 @@ export default function Hero() {
   const [selected, setSelected] = useState<number | null>(null);
   const [visible,  setVisible]  = useState(false);
   const ref = useRef<HTMLElement>(null);
+
+  const router = useRouter();
+
+const {
+  user,
+  isLoading
+} = useUser();
+
+const handleCreateForm = () => {
+
+  if (isLoading) return;
+
+ if (!user?.id) { 
+    router.push("/login");
+    return;
+  }
+
+  router.push("/dashboard");
+};
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 80);
@@ -75,7 +96,12 @@ export default function Hero() {
               Create beautiful forms, collect responses,<br/>and turn insights into action —<br/>all in one intuitive workspace.
             </p>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-              <a href="/dashboard" className="btn-free">Create a free form →</a>
+          <button
+onClick={handleCreateForm}
+className="btn-free"
+>
+Create a free form →
+</button>
               <a href="#features" className="btn-explore" onClick={e=>{e.preventDefault();document.getElementById("features")?.scrollIntoView({behavior:"smooth"})}}>Explore features</a>
             </div>
           </div>

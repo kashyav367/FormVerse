@@ -1,5 +1,5 @@
 {
-  "id": "ceea3001-066f-4f97-bbd6-7072b2d03b79",
+  "id": "a68beb74-151e-4ce3-8d5e-6d57dae3abea",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -111,6 +111,48 @@
           "primaryKey": false,
           "notNull": true
         },
+        "is_published": {
+          "name": "is_published",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "visibility": {
+          "name": "visibility",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'UNLISTED'"
+        },
+        "theme": {
+          "name": "theme",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Aurora'"
+        },
+        "template": {
+          "name": "template",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'BLANK'"
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Feedback'"
+        },
+        "icon": {
+          "name": "icon",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'📝'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -169,6 +211,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "options": {
+          "name": "options",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "index": {
           "name": "index",
           "type": "integer",
@@ -177,6 +225,12 @@
         },
         "placeholder": {
           "name": "placeholder",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": false

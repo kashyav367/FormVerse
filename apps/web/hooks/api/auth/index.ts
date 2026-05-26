@@ -162,7 +162,21 @@ export const useUser = () => {
   } =
     trpc.auth
       .getLoggedInUserInfo
-      .useQuery();
+      .useQuery(
+
+        undefined,
+
+        {
+
+          retry:false,
+
+          throwOnError:false,
+
+          refetchOnWindowFocus:false,
+
+        }
+
+      );
 
   return {
 
@@ -177,5 +191,47 @@ export const useUser = () => {
     status,
 
   };
+
+};
+
+export const useLogout = () => {
+
+const router =
+useRouter();
+
+const utils =
+trpc.useUtils();
+
+const {
+
+mutateAsync:
+logoutAsync,
+
+isPending
+
+} =
+trpc.auth
+.logout
+.useMutation({
+
+onSuccess: async()=>{
+
+await utils.auth.getLoggedInUserInfo.reset();
+
+await utils.invalidate();
+
+router.replace("/");
+
+}
+
+});
+
+return {
+
+logoutAsync,
+
+isPending
+
+};
 
 };

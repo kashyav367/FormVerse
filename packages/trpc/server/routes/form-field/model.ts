@@ -15,21 +15,23 @@ z.object({
 
   "TEXT",
 
-"TEXTAREA",
+  "TEXTAREA",
 
-"EMAIL",
+  "EMAIL",
 
-"NUMBER",
+  "NUMBER",
 
-"SELECT",
+  "SELECT",
 
-"CHECKBOX",
+  "CHECKBOX",
 
-"RADIO",
+  "RADIO",
 
-"DATE",
+  "DATE",
 
-"PASSWORD"
+  "PASSWORD",
+
+  "RATING"
 
   ]),
 
@@ -38,6 +40,10 @@ z.object({
   .optional(),
 
   options:
+  z.string()
+  .optional(),
+
+  description:
   z.string()
   .optional(),
 

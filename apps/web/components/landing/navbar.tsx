@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+useUser,
+useLogout
+} from "~/hooks/api/auth";
 
 const NAV_ITEMS = [
   { label: "Features",  id: "features" },
@@ -13,6 +18,32 @@ export default function Navbar() {
   const [scrolled,    setScrolled]    = useState(false);
   const [activeItem,  setActiveItem]  = useState<string | null>(null);
   const [menuOpen,    setMenuOpen]    = useState(false);
+
+  const router = useRouter();
+
+const {
+user,
+isLoading
+} = useUser();
+
+const {
+logoutAsync
+} = useLogout();
+
+const handleCreateForm = ()=>{
+
+if(isLoading) return;
+
+if (!user?.id) {
+
+router.push("/login");
+return;
+
+}
+
+router.push("/dashboard");
+
+};
 
   useEffect(() => {
     const onScroll = () => {
@@ -136,11 +167,50 @@ export default function Navbar() {
 
         {/* Right */}
         <div style={{ display:"flex", alignItems:"center", gap:18 }}>
-          <Link href="/login" className="nl nav-login" style={{ textDecoration:"none" }}>Log in</Link>
-          <Link href="/dashboard" className="nav-cta">
-            Create Form
-            <span style={{ width:22, height:22, background:"#c0392b", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:12 }}>⛩</span>
-          </Link>
+       {
+user?.id ? (
+
+<button
+className="nl nav-login"
+onClick={()=>
+logoutAsync()
+}
+>
+Logout
+</button>
+
+) : (
+
+<Link
+href="/login"
+className="nl nav-login"
+style={{ textDecoration:"none" }}
+>
+Log in
+</Link>
+
+)
+}
+          <button
+onClick={handleCreateForm}
+className="nav-cta"
+>
+Create Form
+<span
+style={{
+width:22,
+height:22,
+background:"#c0392b",
+borderRadius:"50%",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+fontSize:12
+}}
+>
+⛩
+</span>
+</button>
           <button className="hb" onClick={() => setMenuOpen(p => !p)} aria-label="Menu">
             <span style={{ transform: menuOpen ? "rotate(45deg) translateY(7px)"  : "none" }}/>
             <span style={{ opacity: menuOpen ? 0 : 1 }}/>

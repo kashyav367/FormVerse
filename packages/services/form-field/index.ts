@@ -43,25 +43,19 @@ class FormFieldService {
     const result =
       await db
         .select({
-
           maxIndex:
             max(
               formsFields.index
             ),
-
         })
-
         .from(
           formsFields
         )
-
         .where(
-
           eq(
             formsFields.formId,
             formId
           )
-
         );
 
     const current =
@@ -84,16 +78,12 @@ class FormFieldService {
     const {
 
       label,
-
       formId,
-
       isRequired,
-
       type,
-
       placeholder,
-
       options,
+      description,
 
     } =
       await createFieldInput
@@ -139,6 +129,9 @@ class FormFieldService {
           options:
             options ?? null,
 
+          description:
+            description ?? null,
+
         })
 
         .returning({
@@ -177,16 +170,12 @@ class FormFieldService {
     const {
 
       fieldId,
-
       label,
-
       type,
-
       placeholder,
-
       isRequired,
-
       options,
+      description,
 
     } =
       await updateFieldInput
@@ -236,15 +225,19 @@ class FormFieldService {
 
           }),
 
+          ...(description !== undefined && {
+
+            description,
+
+          }),
+
         })
 
         .where(
-
           eq(
             formsFields.id,
             fieldId
           )
-
         )
 
         .returning({
@@ -289,12 +282,10 @@ class FormFieldService {
         )
 
         .where(
-
           eq(
             formsFields.id,
             fieldId
           )
-
         )
 
         .returning({
@@ -307,9 +298,7 @@ class FormFieldService {
     if (!result) {
 
       throw new Error(
-
         `Field with ID ${fieldId} not found`
-
       );
 
     }
@@ -329,9 +318,7 @@ class FormFieldService {
   ) {
 
     const {
-
       formId,
-
     } =
       await getFieldInputType
       .parseAsync(
@@ -365,6 +352,9 @@ class FormFieldService {
         options:
           formsFields.options,
 
+        description:
+          formsFields.description,
+
         isRequired:
           formsFields.isRequired,
 
@@ -375,12 +365,10 @@ class FormFieldService {
       )
 
       .where(
-
         eq(
           formsFields.formId,
           formId
         )
-
       )
 
       .orderBy(

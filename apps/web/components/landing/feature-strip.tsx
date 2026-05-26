@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "~/hooks/api/auth";
 
 const FEATURES = [
   { bg:"#fce4ec", emoji:"✏️", title:"Drag & Drop Builder",   desc:"Create beautiful forms in minutes with our simple drag & drop interface." },
@@ -12,6 +14,7 @@ export default function Features() {
   const [visibleCards, setVisibleCards] = useState([false,false,false]);
   const [titleVisible, setTitleVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
+
 
   useEffect(() => {
     const obs = new IntersectionObserver(([entry]) => {

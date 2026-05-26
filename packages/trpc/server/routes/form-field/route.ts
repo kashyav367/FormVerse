@@ -86,6 +86,11 @@ z.string()
 .nullable()
 .optional(),
 
+description:
+z.string()
+.nullable()
+.optional(),
+
 isRequired:
 z.boolean(),
 
@@ -93,77 +98,102 @@ z.boolean(),
 )
 )
 
-    .query(
-      async ({ input }) => {
+.query(
+async ({ input }) => {
 
-        return await
-        formFieldService
-        .getFields({
+return await
+formFieldService
+.getFields({
 
-          formId:
-            input.formId,
+formId:
+input.formId,
 
-        });
+});
 
-      }
-    ),
+}
+),
 
-  deleteField:
-    authenticatedProcedure
-      .input(
-        z.object({
+deleteField:
+authenticatedProcedure
+.input(
+z.object({
 
-          fieldId:
-            z.string()
-              .uuid(),
+fieldId:
+z.string()
+.uuid(),
 
-        })
-      )
-      .mutation(
-        async ({ input }) => {
+})
+)
 
-          return await
-          formFieldService
-          .deleteField({
+.mutation(
+async ({ input }) => {
 
-            fieldId:
-              input.fieldId,
+return await
+formFieldService
+.deleteField({
 
-          });
+fieldId:
+input.fieldId,
 
-        }
-      ),
+});
 
-  updateField:
-    authenticatedProcedure
-      .input(
-        z.object({
+}
+),
 
-          fieldId:
-            z.string()
-              .uuid(),
+updateField:
+authenticatedProcedure
 
-          label:
-            z.string(),
+.input(
+z.object({
 
-        })
-      )
-      .mutation(
-        async ({ input }) => {
+fieldId:
+z.string()
+.uuid(),
 
-         return await
-       formFieldService
-      .updateField({
+label:
+z.string()
+.optional(),
 
-       fieldId:
-     input.fieldId,
+description:
+z.string()
+.optional(),
 
-       label:
-      input.label,
+options:
+z.string()
+.optional(),
 
-       });
+isRequired:
+z.boolean()
+.optional(),
 
-        }
-      ),
+})
+)
+
+.mutation(
+async ({ input }) => {
+
+return await
+formFieldService
+.updateField({
+
+fieldId:
+input.fieldId,
+
+label:
+input.label,
+
+description:
+input.description,
+
+options:
+input.options,
+
+isRequired:
+input.isRequired,
+
+});
+
+}
+),
 
 });

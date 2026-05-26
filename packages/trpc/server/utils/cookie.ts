@@ -33,10 +33,14 @@ export function getCookieFactory(req: Request) {
 
 export function clearCookieFactory(res: Response) {
   return function clearCookie(name: string) {
-    res.clearCookie(name);
+
+    res.clearCookie(
+      name,
+      defaultCookieOption
+    );
+
   };
 }
-
 // Authentication Cookie
 
 const AUTHENTICATION_COOKIE_NAME = "authentication-token";

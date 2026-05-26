@@ -16,6 +16,12 @@ CREATE TABLE "forms" (
 	"title" text NOT NULL,
 	"description" text,
 	"created_by" uuid NOT NULL,
+	"is_published" boolean DEFAULT false NOT NULL,
+	"visibility" text DEFAULT 'UNLISTED' NOT NULL,
+	"theme" text DEFAULT 'Aurora' NOT NULL,
+	"template" text DEFAULT 'BLANK' NOT NULL,
+	"category" text DEFAULT 'Feedback' NOT NULL,
+	"icon" text DEFAULT '📝' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -26,8 +32,10 @@ CREATE TABLE "form_fields" (
 	"label" text NOT NULL,
 	"label_key" text NOT NULL,
 	"type" text NOT NULL,
+	"options" text,
 	"index" integer NOT NULL,
 	"placeholder" text,
+	"description" text,
 	"is_required" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint

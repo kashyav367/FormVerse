@@ -1,6 +1,9 @@
 import { userService } from "../../services";
 import { authenticatedProcedure, publicProcedure, router } from "../../trpc";
-import { setAuthenticationCookie } from "../../utils/cookie";
+import {
+setAuthenticationCookie,
+clearAuthenticationCookie
+} from "../../utils/cookie";
 import { generatePath } from "../../utils/path-generator";
 import {
   createUserWithEmailAndPasswordInputModel,
@@ -61,27 +64,48 @@ export const authRouter = router({
         id,
       };
     }),
-
 getLoggedInUserInfo: authenticatedProcedure
-  .meta({
-    openapi: {
-      method: "GET",
-      path: getPath("/getLoggedInUserInfo"),
-      tags: TAGS,
-      protect: true,
-    },
-  })
-  .input(getLoggedInUserInfoInputModel)
-  .output(getLoggedInUserInfoOutput)
-  .query(async ({ ctx }) => {
-    const { id, email, fullName, profileImageUrl } =
-      await userService.getUserInfoById(ctx.user?.id);
+.meta({
+openapi:{
+method:"GET",
+path:getPath("/getLoggedInUserInfo"),
+tags:TAGS,
+protect:true,
+},
+})
+.input(getLoggedInUserInfoInputModel)
+.output(getLoggedInUserInfoOutput)
+.query(async({ctx})=>{
 
-    return {
-      id,
-      email,
-      fullName,
-      profileImageUrl,
-    };
-  }),
-}); 
+const {
+id,
+email,
+fullName,
+profileImageUrl
+}=
+await userService.getUserInfoById(
+ctx.user?.id
+);
+
+return{
+id,
+email,
+fullName,
+profileImageUrl
+};
+
+}),
+
+logout: authenticatedProcedure
+.mutation(async ({ctx})=>{
+
+clearAuthenticationCookie(ctx);
+
+return{
+success:true
+};
+
+})
+
+});
+

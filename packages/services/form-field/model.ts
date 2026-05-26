@@ -19,69 +19,83 @@ z.enum([
 
 "PASSWORD",
 
+"RADIO",
+
+"RATING",
+
 ]);
 
 export const createFieldInput =
 z.object({
 
-  label:
-  z
-  .string()
-  .max(100)
-  .describe(
+label:
+z
+.string()
+.max(100)
+.describe(
 
-    "Display label for field"
+"Display label for field"
 
-  ),
+),
 
-  type:
-  fieldTypeEnum
-  .describe(
+type:
+fieldTypeEnum
+.describe(
 
-    "Field type"
+"Field type"
 
-  ),
+),
 
-  formId:
-  z
-  .string()
-  .uuid()
-  .describe(
+formId:
+z
+.string()
+.uuid()
+.describe(
 
-    "Form UUID"
+"Form UUID"
 
-  ),
+),
 
-  placeholder:
-  z
-  .string()
-  .optional()
-  .describe(
+placeholder:
+z
+.string()
+.optional()
+.describe(
 
-    "Placeholder text"
+"Placeholder text"
 
-  ),
+),
 
-  isRequired:
-  z
-  .boolean()
-  .optional()
-  .default(false)
-  .describe(
+isRequired:
+z
+.boolean()
+.optional()
+.default(false)
+.describe(
 
-    "Required field"
+"Required field"
 
-  ),
+),
 
-  options:
-  z
-  .string()
-  .optional()
-  .describe(
+options:
+z
+.string()
+.optional()
+.describe(
 
-    "JSON string for select/checkbox options"
+"JSON string for select/checkbox options"
 
-  ),
+),
+
+description:
+z
+.string()
+.optional()
+.describe(
+
+"Question description"
+
+),
 
 });
 
@@ -93,36 +107,41 @@ typeof createFieldInput
 export const updateFieldInput =
 z.object({
 
-  fieldId:
-  z
-  .string()
-  .uuid(),
+fieldId:
+z
+.string()
+.uuid(),
 
-  label:
-  z
-  .string()
-  .max(100)
-  .optional(),
+label:
+z
+.string()
+.max(100)
+.optional(),
 
-  type:
-  fieldTypeEnum
-  .optional(),
+type:
+fieldTypeEnum
+.optional(),
 
-  placeholder:
-  z
-  .string()
-  .optional()
-  .nullable(),
+placeholder:
+z
+.string()
+.optional()
+.nullable(),
 
-  isRequired:
-  z
-  .boolean()
-  .optional(),
+isRequired:
+z
+.boolean()
+.optional(),
 
-  options:
-  z
-  .string()
-  .optional(),
+options:
+z
+.string()
+.optional(),
+
+description:
+z
+.string()
+.optional(),
 
 });
 
@@ -134,10 +153,10 @@ typeof updateFieldInput
 export const deleteFieldInput =
 z.object({
 
-  fieldId:
-  z
-  .string()
-  .uuid(),
+fieldId:
+z
+.string()
+.uuid(),
 
 });
 
@@ -149,10 +168,10 @@ typeof deleteFieldInput
 export const getFieldInputType =
 z.object({
 
-  formId:
-  z
-  .string()
-  .uuid(),
+formId:
+z
+.string()
+.uuid(),
 
 });
 
