@@ -10,11 +10,10 @@ const ONE_YEAR = 12 * ONE_MONTH;
 const defaultCookieOption: CookieOptions = {
   path: "/",
   httpOnly: true,
-  secure: false,
-  sameSite: "strict",
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
   maxAge: ONE_YEAR,
 };
-
 export function createCookiesFactory(res: Response) {
   return function createCookie(
     name: string,
