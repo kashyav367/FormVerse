@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   authenticatedProcedure,
+  publicProcedure,
   router,
 } from "../../trpc";
 
@@ -43,8 +44,8 @@ createField:
     ),
 
  listFields:
-  authenticatedProcedure
-    .input(
+    publicProcedure
+    .input( 
       z.object({
 
         formId:
