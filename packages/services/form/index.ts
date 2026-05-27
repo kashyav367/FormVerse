@@ -453,7 +453,7 @@ fields.map(
 (field,index)=>({
 
 formId:
-newForm.id,
+newForm!.id,
 
 label:
 field.label,
