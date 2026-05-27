@@ -11,7 +11,9 @@ const defaultCookieOption: CookieOptions = {
   path: "/",
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  sameSite: process.env.NODE_ENV === "production"
+    ? "none"
+    : "lax",
   maxAge: ONE_YEAR,
 };
 export function createCookiesFactory(res: Response) {
