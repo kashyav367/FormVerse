@@ -133,7 +133,7 @@ status,
 .listForm
 .useQuery(
 
-filters,
+filters ?? {},
 
 {
 
