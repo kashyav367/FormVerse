@@ -16,17 +16,39 @@ export default function Features() {
   const ref = useRef<HTMLElement>(null);
 
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setTitleVisible(true);
-        FEATURES.forEach((_,i) => setTimeout(() => setVisibleCards(p => { const n=[...p]; n[i]=true; return n; }), i*150));
-        obs.disconnect();
-      }
-    }, { threshold: 0.12 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+useEffect(() => {
+
+  const obs = new IntersectionObserver((entries) => {
+
+    const entry = entries[0];
+
+    if (entry?.isIntersecting) {
+
+      setTitleVisible(true);
+
+      FEATURES.forEach((_, i) =>
+        setTimeout(() =>
+          setVisibleCards((p) => {
+            const n = [...p];
+            n[i] = true;
+            return n;
+          }),
+        i * 150)
+      );
+
+      obs.disconnect();
+
+    }
+
+  }, { threshold: 0.12 });
+
+  if (ref.current) {
+    obs.observe(ref.current);
+  }
+
+  return () => obs.disconnect();
+
+}, []);
 
   return (
     <>
