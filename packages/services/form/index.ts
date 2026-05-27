@@ -371,7 +371,7 @@ throw new Error(
 
 }
 
-const [newForm]=
+const [newForm] =
 
 await db
 
@@ -414,6 +414,13 @@ formTable.id
 
 });
 
+if(!newForm){
+
+throw new Error(
+"Failed to duplicate form"
+);
+
+}
 
 const fields=
 
@@ -468,9 +475,7 @@ field.placeholder,
 isRequired:
 field.isRequired
 
-})
-
-)
+}))
 
 );
 
@@ -484,9 +489,6 @@ newForm.id
 };
 
 }
-
-
-
 
 /* ---------------- LIST FORMS ---------------- */
 
