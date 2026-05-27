@@ -9,7 +9,7 @@ const envSchema = z.object({
 
   BASE_URL: z
     .string()
-    .default("http://localhost:8000"),
+    .default("https://form-verse-web-6yyg.vercel.app"),
 });
 
 function createEnv(env: NodeJS.ProcessEnv) {
