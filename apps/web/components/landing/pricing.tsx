@@ -12,11 +12,25 @@ export default function Pricing() {
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if(e.isIntersecting) setVisible(true); }, { threshold:0.1 });
-    if(ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+useEffect(() => {
+
+  const obs = new IntersectionObserver((entries) => {
+
+    const entry = entries[0];
+
+    if(entry?.isIntersecting){
+      setVisible(true);
+    }
+
+  }, { threshold:0.1 });
+
+  if(ref.current){
+    obs.observe(ref.current);
+  }
+
+  return () => obs.disconnect();
+
+}, []);
 
   return (
     <>
