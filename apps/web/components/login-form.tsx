@@ -60,7 +60,7 @@ export function LoginForm({
 
         console.log("Login Success");
 
-        router.push("/dashboard");
+        window.location.href = "/dashboard";
 
       } catch (error) {
         console.log("Login Failed:", error);
