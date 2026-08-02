@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useListFields } from "~/hooks/api/form-field";
 import { useSubmitForm } from "~/hooks/api/form-submission";
-import { useGetForm } from "~/hooks/api/form";
+import { usePublicForm } from "~/hooks/api/form";
 
 type FormField = {
   id: string;
@@ -64,7 +64,7 @@ export default function PublicFormPage() {
   const [honeypotTrap, setHoneypotTrap] = useState("");
 
   const { fields = [] } = useListFields(formId);
-  const { form, isLoading: formLoading } = useGetForm(formId);
+  const { form, isLoading: formLoading } = usePublicForm(formId);
   const { submitFormAsync, isPending } = useSubmitForm();
 
   const currentTheme = (() => {
