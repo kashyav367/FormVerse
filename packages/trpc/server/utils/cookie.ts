@@ -11,16 +11,15 @@ const defaultCookieOption: CookieOptions = {
   path: "/",
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production"
-    ? "none"
-    : "lax",
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   maxAge: ONE_YEAR,
 };
+
 export function createCookiesFactory(res: Response) {
   return function createCookie(
     name: string,
     value: string,
-    opts: CookieOptions = defaultCookieOption,
+    opts: CookieOptions = defaultCookieOption
   ) {
     res.cookie(name, value, opts);
   };
@@ -34,15 +33,9 @@ export function getCookieFactory(req: Request) {
 
 export function clearCookieFactory(res: Response) {
   return function clearCookie(name: string) {
-
-    res.clearCookie(
-      name,
-      defaultCookieOption
-    );
-
+    res.clearCookie(name, defaultCookieOption);
   };
 }
-// Authentication Cookie
 
 const AUTHENTICATION_COOKIE_NAME = "authentication-token";
 
@@ -51,9 +44,17 @@ export function setAuthenticationCookie(ctx: TRPCContext, accessToken: string) {
 }
 
 export function getAuthenticationCookie(ctx: TRPCContext) {
-  return ctx.getCookie(AUTHENTICATION_COOKIE_NAME);
+  const cookieToken = ctx.getCookie(AUTHENTICATION_COOKIE_NAME);
+  if (cookieToken) return cookieToken;
+
+  const authHeader = (ctx.req as any)?.headers?.authorization || (ctx.req as any)?.headers?.["authorization"];
+  if (authHeader && typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+    return authHeader.split(" ")[1];
+  }
+
+  return undefined;
 }
 
 export function clearAuthenticationCookie(ctx: TRPCContext) {
-ctx.clearCookie(AUTHENTICATION_COOKIE_NAME);
+  ctx.clearCookie(AUTHENTICATION_COOKIE_NAME);
 }
