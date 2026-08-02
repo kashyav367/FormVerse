@@ -4,7 +4,6 @@ import {
   text,
   timestamp,
   integer,
-  jsonb,
 } from "drizzle-orm/pg-core";
 import { formTable } from "./form";
 
@@ -19,9 +18,8 @@ export const formSubmissions = pgTable(
       .references(() => formTable.id, { onDelete: "cascade" })
       .notNull(),
 
-    responseData: jsonb("response_data")
-      .notNull()
-      .$type<Record<string, any>>(),
+    responseData: text("response_data")
+      .notNull(),
 
     submitterIpHash: text("submitter_ip_hash"),
 

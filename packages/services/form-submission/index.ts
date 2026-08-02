@@ -72,7 +72,7 @@ class FormSubmissionService {
         label: f.label,
         labelKey: f.labelKey,
         type: f.type,
-        options: (f.options as string[]) || [],
+        options: f.options ? (typeof f.options === "string" ? JSON.parse(f.options) : f.options) : [],
         isRequired: f.isRequired,
         validationRules: f.validationRules as any,
         conditionalLogic: f.conditionalLogic as any,
@@ -87,7 +87,7 @@ class FormSubmissionService {
       .insert(formSubmissions)
       .values({
         formId,
-        responseData: validatedData,
+        responseData: JSON.stringify(validatedData),
         submitterIpHash: submitterIpHash || null,
         completionTimeSeconds: completionTimeSeconds || null,
       })
@@ -169,10 +169,23 @@ class FormSubmissionService {
 
     const totalCount = Number(countRes[0]?.count ?? 0);
 
-    let filtered = data;
+    const parsedSubmissions = data.map((item) => {
+      let parsed = {};
+      try {
+        parsed = typeof item.responseData === "string" ? JSON.parse(item.responseData) : item.responseData;
+      } catch {
+        parsed = {};
+      }
+      return {
+        ...item,
+        responseData: parsed,
+      };
+    });
+
+    let filtered = parsedSubmissions;
     if (searchQuery && searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      filtered = data.filter((item) =>
+      filtered = parsedSubmissions.filter((item) =>
         JSON.stringify(item.responseData).toLowerCase().includes(q)
       );
     }
@@ -196,6 +209,13 @@ class FormSubmissionService {
       throw new Error("Submission not found");
     }
 
+    let parsed = {};
+    try {
+      parsed = typeof submission.responseData === "string" ? JSON.parse(submission.responseData) : submission.responseData;
+    } catch {
+      parsed = {};
+    }
+
     const answers = await db
       .select()
       .from(responseAnswersTable)
@@ -203,6 +223,7 @@ class FormSubmissionService {
 
     return {
       ...submission,
+      responseData: parsed,
       answers,
     };
   }

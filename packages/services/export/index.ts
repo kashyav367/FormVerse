@@ -24,7 +24,13 @@ class ExportService {
     const rows: string[][] = [headers];
 
     for (const sub of submissions) {
-      const data = (sub.responseData as Record<string, any>) || {};
+      let data: Record<string, any> = {};
+      try {
+        data = typeof sub.responseData === "string" ? JSON.parse(sub.responseData) : sub.responseData || {};
+      } catch {
+        data = {};
+      }
+
       const row = [
         sub.id,
         new Date(sub.submittedAt).toISOString(),

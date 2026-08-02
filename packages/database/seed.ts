@@ -1,4 +1,5 @@
 import { randomBytes, createHmac } from "node:crypto";
+import { sql } from "drizzle-orm";
 import db from "./index";
 import { usersTable } from "./models/user";
 import { formTable } from "./models/form";
@@ -8,7 +9,15 @@ import { analyticsEventsTable } from "./models/analytics-event";
 import { responseAnswersTable } from "./models/response-answer";
 
 async function seed() {
-  console.log("🌱 Starting FormVerse database seeding...");
+  console.log("🌱 Cleaning up orphan records and starting FormVerse database seeding...");
+
+  // Clean orphan records in remote DB if parent forms were deleted
+  try {
+    await db.execute(sql`DELETE FROM form_fields WHERE form_id NOT IN (SELECT id FROM forms);`);
+    await db.execute(sql`DELETE FROM form_submissions WHERE form_id NOT IN (SELECT id FROM forms);`);
+  } catch (e) {
+    // Ignore if tables don't exist yet
+  }
 
   // 1. Seed Demo User
   const demoEmail = "demo@formverse.com";
@@ -113,7 +122,7 @@ async function seed() {
         labelKey: "primary_features",
         type: "CHECKBOX",
         index: 3,
-        options: ["Dynamic Form Builder", "tRPC API Integration", "Scalar API Docs", "Analytics Dashboard"],
+        options: JSON.stringify(["Dynamic Form Builder", "tRPC API Integration", "Scalar API Docs", "Analytics Dashboard"]),
         isRequired: true,
       })
       .returning();
@@ -162,7 +171,7 @@ async function seed() {
         .insert(formSubmissions)
         .values({
           formId: form1.id,
-          responseData: sub,
+          responseData: JSON.stringify(sub),
           submitterIpHash: "seed_ip_hash_demo",
           completionTimeSeconds: 45,
         })

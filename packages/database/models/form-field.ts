@@ -43,7 +43,7 @@ export const formsFields = pgTable(
     type: text("type")
       .notNull(),
 
-    options: jsonb("options").$type<string[]>(),
+    options: text("options"),
 
     index: integer("index")
       .notNull(),
