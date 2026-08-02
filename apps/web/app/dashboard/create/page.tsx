@@ -26,7 +26,74 @@ const TEMPLATES = [
 ];
 
 const THEMES = {
-  // ── 3 WHITE BACKGROUND THEMES ──
+  // ── SUPERHERO & CARTOON POPULAR THEMES ──
+  Spiderman: {
+    name: "Spider-Man Web Suit",
+    subtitle: "🕷️ Crimson Red & Web Blue",
+    page: "#0e0406",
+    card: "#18080c",
+    preview: "#2a0a10",
+    buttonFrom: "#e63946",
+    buttonTo: "#0077b6",
+    accent: "#e63946",
+    bar: "#e63946",
+    isDark: true,
+    mode: "BLACK",
+  },
+  Superman: {
+    name: "Superman Shield",
+    subtitle: "🦸‍♂️ Royal Blue & Golden Yellow",
+    page: "#040d21",
+    card: "#0a1838",
+    preview: "#0f2352",
+    buttonFrom: "#dc2626",
+    buttonTo: "#eab308",
+    accent: "#dc2626",
+    bar: "#dc2626",
+    isDark: true,
+    mode: "BLACK",
+  },
+  NinjaHattori: {
+    name: "Ninja Hattori",
+    subtitle: "🥷 Iga Ninja Dark & Yellow",
+    page: "#050e1a",
+    card: "#0c1e36",
+    preview: "#11294a",
+    buttonFrom: "#0284c7",
+    buttonTo: "#eab308",
+    accent: "#38bdf8",
+    bar: "#38bdf8",
+    isDark: true,
+    mode: "BLACK",
+  },
+  Doraemon: {
+    name: "Doraemon Pocket",
+    subtitle: "🐱 Sky Blue & Gadget Bell",
+    page: "#e0f2fe",
+    card: "#ffffff",
+    preview: "#f0f9ff",
+    buttonFrom: "#0284c7",
+    buttonTo: "#38bdf8",
+    accent: "#0284c7",
+    bar: "#0284c7",
+    isDark: false,
+    mode: "WHITE",
+  },
+
+  // ── POPULAR COMMUNITY THEMES ──
+  Discord: {
+    name: "Discord Dark",
+    subtitle: "🎮 Official Discord Dark",
+    page: "#313338",
+    card: "#1e1f22",
+    preview: "#2b2d31",
+    buttonFrom: "#5865f2",
+    buttonTo: "#4752c4",
+    accent: "#5865f2",
+    bar: "#5865f2",
+    isDark: true,
+    mode: "BLACK",
+  },
   Sakura: {
     name: "Sakura Blossom",
     subtitle: "🌸 White Rose-Gold",
@@ -53,34 +120,6 @@ const THEMES = {
     isDark: false,
     mode: "WHITE",
   },
-  EmeraldMint: {
-    name: "Emerald Mint",
-    subtitle: "🍃 White Sage Mint",
-    page: "#f2f7f4",
-    card: "#ffffff",
-    preview: "#e6f2ed",
-    buttonFrom: "#10b981",
-    buttonTo: "#0d9488",
-    accent: "#10b981",
-    bar: "#10b981",
-    isDark: false,
-    mode: "WHITE",
-  },
-
-  // ── 3 BLACK BACKGROUND THEMES ──
-  Discord: {
-    name: "Discord Dark",
-    subtitle: "🎮 Black Blurple Theme",
-    page: "#313338",
-    card: "#1e1f22",
-    preview: "#2b2d31",
-    buttonFrom: "#5865f2",
-    buttonTo: "#4752c4",
-    accent: "#5865f2",
-    bar: "#5865f2",
-    isDark: true,
-    mode: "BLACK",
-  },
   Aurora: {
     name: "Aurora Cyber",
     subtitle: "⚡ Black Neon Glass",
@@ -94,25 +133,12 @@ const THEMES = {
     isDark: true,
     mode: "BLACK",
   },
-  Cyberpunk: {
-    name: "Synthwave Cyber",
-    subtitle: "🌌 Black Neon Pink",
-    page: "#0d0714",
-    card: "#160826",
-    preview: "#1a0b2e",
-    buttonFrom: "#ff007f",
-    buttonTo: "#b500ff",
-    accent: "#ff007f",
-    bar: "#ff007f",
-    isDark: true,
-    mode: "BLACK",
-  },
 } as const;
 
 export default function CreateFormPage() {
   const router = useRouter();
 
-  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("Discord");
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("Spiderman");
   const [selectedTemplate, setSelectedTemplate] = useState("Feedback");
   const [visibility, setVisibility] = useState<Visibility>("UNLISTED");
 
@@ -197,14 +223,14 @@ export default function CreateFormPage() {
             </h1>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", color: theme.isDark ? "#94a3b8" : "#888", fontSize: 16, marginBottom: 40, lineHeight: 1.6 }}>
-              Choose from 6 curated themes: 3 White/Light Mode + 3 Black/Dark Mode (including Discord Dark).
+              Select your favorite theme: Spider-Man, Superman, Ninja Hattori, Doraemon, Discord, etc.
             </p>
 
             {/* Theme picker */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, marginBottom: 14 }}>
                 <WandSparkles size={16} style={{ color: theme.accent }} />
-                6 Best Themes (3 White + 3 Black)
+                Select Superhero & Cartoon Theme
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>

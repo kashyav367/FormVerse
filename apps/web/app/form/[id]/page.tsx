@@ -39,9 +39,83 @@ type ThemeConfig = {
   isMacOS?: boolean;
   isWindows?: boolean;
   isAnime?: boolean;
+  isSpiderman?: boolean;
+  isSuperman?: boolean;
+  isNinja?: boolean;
+  isDoraemon?: boolean;
 };
 
 const themes: Record<string, ThemeConfig> = {
+  // ── SUPERHERO & CARTOON POPULAR THEMES ──
+  Spiderman: {
+    name: "Spider-Man Web Suit",
+    type: "BLACK",
+    bg: "bg-gradient-to-br from-[#0e0406] via-[#1a070a] to-[#040817]",
+    cardBg: "bg-[#18080c]/90 backdrop-blur-2xl",
+    cardBorder: "border-[#e63946]/50 shadow-[0_0_50px_rgba(230,57,70,0.35)]",
+    text: "text-red-50",
+    sub: "text-rose-300/80",
+    input: "bg-[#100407] border-[#e63946]/40 text-white placeholder-rose-500 focus:border-[#e63946] focus:ring-2 focus:ring-[#e63946]/30",
+    button: "from-[#e63946] via-[#b7094c] to-[#0077b6] text-white shadow-[0_0_30px_rgba(230,57,70,0.5)]",
+    badge: "bg-[#e63946]/20 text-[#e63946] border border-[#e63946]/40 font-bold",
+    accent: "#e63946",
+    isDark: true,
+    isSpiderman: true,
+    blob1: "bg-red-500/25",
+    blob2: "bg-blue-600/25",
+  },
+  Superman: {
+    name: "Superman Shield",
+    type: "BLACK",
+    bg: "bg-gradient-to-br from-[#040d21] via-[#091a42] to-[#1c0826]",
+    cardBg: "bg-[#0a1838]/90 backdrop-blur-2xl",
+    cardBorder: "border-[#dc2626]/50 shadow-[0_0_50px_rgba(220,38,38,0.3)]",
+    text: "text-blue-50",
+    sub: "text-amber-200/80",
+    input: "bg-[#050e24] border-blue-700/60 text-white placeholder-blue-400 focus:border-[#dc2626] focus:ring-2 focus:ring-[#dc2626]/30",
+    button: "from-[#dc2626] via-[#e11d48] to-[#eab308] text-white shadow-[0_0_30px_rgba(220,38,38,0.5)]",
+    badge: "bg-[#dc2626]/20 text-[#eab308] border border-[#dc2626]/40 font-extrabold",
+    accent: "#dc2626",
+    isDark: true,
+    isSuperman: true,
+    blob1: "bg-blue-600/25",
+    blob2: "bg-amber-500/25",
+  },
+  NinjaHattori: {
+    name: "Ninja Hattori Shadow",
+    type: "BLACK",
+    bg: "bg-gradient-to-br from-[#050e1a] via-[#0c1e36] to-[#031424]",
+    cardBg: "bg-[#0c1e36]/90 backdrop-blur-2xl",
+    cardBorder: "border-[#38bdf8]/50 shadow-[0_0_50px_rgba(56,189,248,0.3)]",
+    text: "text-sky-50",
+    sub: "text-amber-300/80",
+    input: "bg-[#040d1a] border-sky-800/70 text-sky-100 placeholder-sky-500 focus:border-[#38bdf8] focus:ring-2 focus:ring-[#38bdf8]/30",
+    button: "from-[#0284c7] via-[#0369a1] to-[#eab308] text-white shadow-[0_0_30px_rgba(56,189,248,0.4)]",
+    badge: "bg-[#0284c7]/20 text-[#38bdf8] border border-[#0284c7]/40 font-bold",
+    accent: "#38bdf8",
+    isDark: true,
+    isNinja: true,
+    blob1: "bg-sky-500/25",
+    blob2: "bg-amber-500/20",
+  },
+  Doraemon: {
+    name: "Doraemon Pocket",
+    type: "WHITE",
+    bg: "bg-gradient-to-br from-[#e0f2fe] via-[#bae6fd] to-[#7dd3fc]",
+    cardBg: "bg-white/95 backdrop-blur-xl",
+    cardBorder: "border-[#38bdf8]/60 shadow-[0_20px_60px_rgba(56,189,248,0.2)]",
+    text: "text-[#0369a1]",
+    sub: "text-[#0284c7]",
+    input: "bg-[#f0f9ff] border-sky-300 text-[#0369a1] placeholder-sky-400 focus:border-[#0284c7] focus:ring-2 focus:ring-[#0284c7]/20",
+    button: "from-[#0284c7] via-[#38bdf8] to-[#2563eb] text-white shadow-[0_10px_30px_rgba(2,132,199,0.35)]",
+    badge: "bg-sky-100 text-[#0284c7] border border-sky-300 font-bold",
+    accent: "#0284c7",
+    isDark: false,
+    isDoraemon: true,
+    blob1: "bg-sky-300/30",
+    blob2: "bg-amber-300/30",
+  },
+
   // ── 3 WHITE / LIGHT BACKGROUND THEMES ──
   Sakura: {
     name: "Sakura Blossom (White)",
@@ -140,113 +214,9 @@ const themes: Record<string, ThemeConfig> = {
     blob1: "bg-[#ff007f]/25",
     blob2: "bg-[#00f0ff]/25",
   },
-
-  // ── Fallback Aliases ──
-  VSCode: {
-    name: "VS Code Dark",
-    type: "BLACK",
-    bg: "bg-[#181818]",
-    cardBg: "bg-[#1e1e1e]",
-    cardBorder: "border-[#333333] border-l-4 border-l-[#007acc] shadow-[0_20px_60px_rgba(0,0,0,0.8)]",
-    text: "text-[#d4d4d4]",
-    sub: "text-[#858585]",
-    input: "bg-[#3c3c3c] border-[#555555] text-[#ce9178] placeholder-[#777777] focus:border-[#007acc]",
-    button: "from-[#007acc] to-[#005a9e] text-white shadow-[0_4px_16px_rgba(0,122,204,0.4)]",
-    badge: "bg-[#007acc]/20 text-[#569cd6] border border-[#007acc]/40 font-mono",
-    accent: "#007acc",
-    isDark: true,
-    isVSCode: true,
-  },
-  MacOS: {
-    name: "macOS Glass",
-    type: "BLACK",
-    bg: "bg-gradient-to-tr from-[#0f172a] via-[#1e1b4b] to-[#31103f]",
-    cardBg: "bg-white/10 backdrop-blur-3xl",
-    cardBorder: "border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.5)]",
-    text: "text-white",
-    sub: "text-slate-300/80",
-    input: "bg-black/30 border-white/15 text-white placeholder-slate-400 focus:border-blue-400",
-    button: "from-blue-500 to-indigo-600 text-white shadow-[0_10px_30px_rgba(59,130,246,0.4)]",
-    badge: "bg-white/10 text-blue-300 border border-white/20",
-    accent: "#3b82f6",
-    isDark: true,
-    isMacOS: true,
-  },
-  Windows11: {
-    name: "Windows 11 Mica",
-    type: "BLACK",
-    bg: "bg-gradient-to-br from-[#0f172a] via-[#111c38] to-[#0b1329]",
-    cardBg: "bg-slate-900/90 backdrop-blur-2xl",
-    cardBorder: "border-slate-700/60 shadow-[0_25px_80px_rgba(0,0,0,0.7)]",
-    text: "text-slate-100",
-    sub: "text-slate-400",
-    input: "bg-slate-800/80 border-slate-700 text-white placeholder-slate-500 focus:border-[#0078d4]",
-    button: "from-[#0078d4] to-[#106ebe] text-white shadow-[0_6px_24px_rgba(0,120,212,0.4)]",
-    badge: "bg-[#0078d4]/15 text-[#60a5fa] border border-[#0078d4]/30",
-    accent: "#0078d4",
-    isDark: true,
-    isWindows: true,
-  },
-  Anime: {
-    name: "Anime Cyber Kawaii",
-    type: "BLACK",
-    bg: "bg-gradient-to-br from-[#130022] via-[#240046] to-[#3c096c]",
-    cardBg: "bg-[#1a0033]/90 backdrop-blur-2xl",
-    cardBorder: "border-[#ff00a0]/60 shadow-[0_0_50px_rgba(255,0,160,0.35)]",
-    text: "text-pink-100",
-    sub: "text-purple-300/80",
-    input: "bg-[#100020] border-[#ff00a0]/40 text-pink-50 placeholder-purple-500 focus:border-[#ff00a0]",
-    button: "from-[#ff00a0] via-[#7b2cbf] to-[#00f0ff] text-white shadow-[0_0_35px_rgba(255,0,160,0.5)]",
-    badge: "bg-[#ff00a0]/20 text-[#ff77e9] border border-[#ff00a0]/40 font-bold",
-    accent: "#ff00a0",
-    isDark: true,
-    isAnime: true,
-  },
-  Kyoto: {
-    name: "Kyoto Sunset",
-    type: "BLACK",
-    bg: "bg-gradient-to-br from-[#1c120c] via-[#2a1a12] to-[#120a06]",
-    cardBg: "bg-[#241710]/90 backdrop-blur-2xl",
-    cardBorder: "border-amber-600/35 shadow-[0_0_50px_rgba(217,119,6,0.18)]",
-    text: "text-amber-50",
-    sub: "text-amber-200/70",
-    input: "bg-[#180f0a] border-amber-900/70 text-amber-100 placeholder-amber-700",
-    button: "from-amber-500 via-orange-500 to-rose-600 text-white shadow-[0_0_30px_rgba(245,158,11,0.35)]",
-    badge: "bg-amber-500/10 text-amber-400 border border-amber-500/30",
-    accent: "#f59e0b",
-    isDark: true,
-  },
-  Zen: {
-    name: "Emerald Zen",
-    type: "BLACK",
-    bg: "bg-gradient-to-br from-[#061e14] via-[#0b2d1f] to-[#04140d]",
-    cardBg: "bg-[#0c3222]/90 backdrop-blur-2xl",
-    cardBorder: "border-emerald-500/35 shadow-[0_0_50px_rgba(16,185,129,0.18)]",
-    text: "text-emerald-50",
-    sub: "text-emerald-200/70",
-    input: "bg-[#061a11] border-emerald-800/70 text-emerald-100 placeholder-emerald-700",
-    button: "from-emerald-400 via-teal-500 to-cyan-500 text-slate-950 shadow-[0_0_30px_rgba(16,185,129,0.35)]",
-    badge: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
-    accent: "#10b981",
-    isDark: true,
-  },
-  Obsidian: {
-    name: "Obsidian Black",
-    type: "BLACK",
-    bg: "bg-[#050505]",
-    cardBg: "bg-[#111111]/95 backdrop-blur-2xl",
-    cardBorder: "border-[#262626] shadow-[0_20px_70px_rgba(0,0,0,0.95)]",
-    text: "text-white",
-    sub: "text-zinc-400",
-    input: "bg-[#18181b] border-[#27272a] text-white placeholder-zinc-600",
-    button: "from-zinc-100 via-white to-zinc-300 text-black shadow-[0_0_30px_rgba(255,255,255,0.25)]",
-    badge: "bg-zinc-800 text-zinc-300 border border-zinc-700",
-    accent: "#ffffff",
-    isDark: true,
-  },
 };
 
-const defaultTheme: ThemeConfig = themes.Aurora!;
+const defaultTheme: ThemeConfig = themes.Spiderman!;
 
 export default function PublicFormPage() {
   const params = useParams();
@@ -262,7 +232,7 @@ export default function PublicFormPage() {
   const { submitFormAsync, isPending } = useSubmitForm();
 
   const currentTheme: ThemeConfig = (() => {
-    const themeName = form?.theme || "Aurora";
+    const themeName = form?.theme || "Spiderman";
     return themes[themeName] ?? defaultTheme;
   })();
 
@@ -482,7 +452,35 @@ export default function PublicFormPage() {
       <div className="max-w-2xl mx-auto relative z-10 form-wrap">
         <div className={`rounded-[38px] overflow-hidden p-8 md:p-12 border ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
           
-          {/* OS / App Window Header Decoration */}
+          {/* Superhero / Cartoon Header Decorations */}
+          {currentTheme.isSpiderman && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#e63946]/40">
+              <span className="text-xs font-black tracking-widest text-[#e63946] uppercase">🕷️ SPIDER-SUIT WEB ENGINE</span>
+              <span className="text-sm">🕸️ 🕷️ 🔴</span>
+            </div>
+          )}
+
+          {currentTheme.isSuperman && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#dc2626]/40">
+              <span className="text-xs font-black tracking-widest text-[#eab308] uppercase">🦸‍♂️ SUPERMAN METROPOLIS SHIELD</span>
+              <span className="text-sm">⚡ 🛡️ 🔴</span>
+            </div>
+          )}
+
+          {currentTheme.isNinja && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#38bdf8]/40">
+              <span className="text-xs font-black tracking-widest text-[#38bdf8] uppercase">🥷 IGA NINJA SHADOW ENGINE</span>
+              <span className="text-sm">⭐ 🥷 🗡️</span>
+            </div>
+          )}
+
+          {currentTheme.isDoraemon && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#38bdf8]/40">
+              <span className="text-xs font-black tracking-widest text-[#0284c7] uppercase">🐱 DORAEMON GADGET POCKET</span>
+              <span className="text-sm">🔔 🐱 🚀</span>
+            </div>
+          )}
+
           {currentTheme.isDiscord && (
             <div className="flex items-center gap-2 mb-6 pb-3 border-b border-[#383a40]">
               <span className="w-3 h-3 rounded-full bg-[#5865f2]" />
@@ -491,37 +489,10 @@ export default function PublicFormPage() {
             </div>
           )}
 
-          {currentTheme.isMacOS && (
-            <div className="flex items-center gap-2 mb-6 pb-4 border-b border-white/10">
-              <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] shadow-sm" />
-              <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] shadow-sm" />
-              <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] shadow-sm" />
-              <span className="ml-auto text-xs text-slate-400 font-medium tracking-wide">formverse.app — macOS</span>
-            </div>
-          )}
-
-          {currentTheme.isWindows && (
-            <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-700/50">
-              <span className="text-xs text-slate-400 font-semibold tracking-wide">FormVerse — Windows 11</span>
-              <div className="flex items-center gap-3 text-slate-400 text-xs font-mono">
-                <span>—</span>
-                <span>□</span>
-                <span className="text-rose-400">✕</span>
-              </div>
-            </div>
-          )}
-
-          {currentTheme.isVSCode && (
-            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#333333] font-mono text-xs text-[#858585]">
-              <span className="text-[#569cd6]">import <span className="text-[#ce9178]">"formverse"</span>;</span>
-              <span className="bg-[#007acc] text-white px-2 py-0.5 rounded text-[11px]">TSX</span>
-            </div>
-          )}
-
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
             <div className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${currentTheme.badge}`}>
-              {currentTheme.isDiscord ? "🎮 " : currentTheme.type === "WHITE" ? "☀️ " : "🌙 "}
+              {currentTheme.isSpiderman ? "🕷️ " : currentTheme.isSuperman ? "🦸‍♂️ " : currentTheme.isNinja ? "🥷 " : currentTheme.isDoraemon ? "🐱 " : currentTheme.isDiscord ? "🎮 " : currentTheme.type === "WHITE" ? "☀️ " : "🌙 "}
               {currentTheme.name}
             </div>
             <div style={{ padding: "6px 14px", borderRadius: 50, fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 13, fontWeight: 600, opacity: 0.8 }} className={currentTheme.sub}>
