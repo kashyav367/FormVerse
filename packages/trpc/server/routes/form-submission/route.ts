@@ -1,79 +1,84 @@
 import { z } from "zod";
+import { publicProcedure, authenticatedProcedure, router } from "../../trpc";
+import { formSubmissionService } from "../../services";
 
-import {
-  publicProcedure,
-  router,
-} from "../../trpc";
+export const formSubmissionRouter = router({
+  createSubmission: publicProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/submissions",
+        tags: ["Form Submissions"],
+        summary: "Public form submission endpoint with dynamic Zod validation, honeypot filter, and limit enforcement",
+      },
+    })
+    .input(
+      z.object({
+        formId: z.string().uuid(),
+        responseData: z.record(z.string(), z.any()),
+        submitterIpHash: z.string().optional(),
+        completionTimeSeconds: z.number().optional(),
+        honeypotTrap: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await formSubmissionService.createSubmission(input);
+    }),
 
-import {
-  formSubmissionService,
-} from "../../services";
+  listSubmissions: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/submissions/list/{formId}",
+        tags: ["Form Submissions"],
+        summary: "List submissions for a form with search query and pagination",
+      },
+    })
+    .input(
+      z.object({
+        formId: z.string().uuid(),
+        searchQuery: z.string().optional(),
+        page: z.number().optional().default(1),
+        limit: z.number().optional().default(50),
+      })
+    )
+    .query(async ({ input }) => {
+      return await formSubmissionService.getSubmissions(input);
+    }),
 
-export const formSubmissionRouter =
-router({
+  getSubmissionById: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/submissions/{submissionId}",
+        tags: ["Form Submissions"],
+        summary: "Get full submission details with normalized EAV answers",
+      },
+    })
+    .input(
+      z.object({
+        submissionId: z.string().uuid(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await formSubmissionService.getSubmissionById(input.submissionId);
+    }),
 
-  createSubmission:
-    publicProcedure
-
-      .input(
-        z.object({
-
-          formId:
-            z.string()
-              .uuid(),
-
-          responseData:
-            z.record(
-              z.string(),
-              z.string()
-            ),
-
-        })
-      )
-
-      .mutation(
-        async ({ input }) => {
-
-          return await
-          formSubmissionService
-          .createSubmission(
-            input
-          );
-
-        }
-      ),
-
-  listSubmissions:
-publicProcedure
-
-.input(
-z.object({
-
-formId:
-z.string()
-.uuid(),
-
-})
-)
-
-.query(
-async ({ input }) => {
-
-
-
-const data=
-
-await formSubmissionService
-.getSubmissions(
-input.formId
-);
-
-
-
-return data;
-
-}
-),
-
+  deleteSubmission: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "DELETE",
+        path: "/submissions/{submissionId}",
+        tags: ["Form Submissions"],
+        summary: "Delete a form submission by ID",
+      },
+    })
+    .input(
+      z.object({
+        submissionId: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await formSubmissionService.deleteSubmission(input.submissionId);
+    }),
 });
-

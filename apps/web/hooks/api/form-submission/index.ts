@@ -1,67 +1,30 @@
 import { trpc } from "~/trpc/client";
 
 export const useSubmitForm = () => {
-
   const {
-
-    mutateAsync:
-      submitFormAsync,
-
+    mutateAsync: submitFormAsync,
     isPending,
-
     error,
-
     isSuccess,
-
-  } =
-    trpc
-      .formSubmission
-      .createSubmission
-      .useMutation();
+  } = trpc.formSubmission.createSubmission.useMutation();
 
   return {
-
     submitFormAsync,
-
     isPending,
-
     error,
-
     isSuccess,
-
   };
-
 };
 
-export const useListSubmissions =
-(
-  formId: string
-) => {
-
-  const {
-
-    data:
-      submissions = [],
-
-    isPending,
-
-  } =
-    trpc
-      .formSubmission
-      .listSubmissions
-      .useQuery({
-
-        formId,
-
-      });
+export const useListSubmissions = (formId: string) => {
+  const { data, isPending } = trpc.formSubmission.listSubmissions.useQuery({
+    formId,
+  });
 
   return {
-
-    submissions,
-
-    isLoading:
-      isPending,
-
+    submissions: data?.submissions || [],
+    totalCount: data?.totalCount || 0,
+    totalPages: data?.totalPages || 1,
+    isLoading: isPending,
   };
-
 };

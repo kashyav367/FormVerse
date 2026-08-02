@@ -1,200 +1,112 @@
 import { z } from "zod";
+import { authenticatedProcedure, publicProcedure, router } from "../../trpc";
+import { formFieldService } from "../../services";
 
-import {
-  authenticatedProcedure,
-  publicProcedure,
-  router,
-} from "../../trpc";
-
-import {
-  createFieldInputModel,
-  createFieldOutputModel,
-} from "./model";
-
-import {
-  formFieldService,
-} from "../../services";
-
-export const formFieldRouter =
-router({
-
-createField:
-  authenticatedProcedure
+export const formFieldRouter = router({
+  createField: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/form-fields",
+        tags: ["Form Fields"],
+        summary: "Add a field to a form",
+      },
+    })
     .input(
-      createFieldInputModel
-    )
-    .output(
-      createFieldOutputModel
-    )
-    .mutation(
-      async ({ input }) => {
-
-        return await
-        formFieldService
-        .createField({
-
-          ...input,
-
-          isRequired:
-            input.isRequired ?? false,
-
-        });
-
-      }
-    ),
-
- listFields:
-    publicProcedure
-    .input( 
       z.object({
-
-        formId:
-          z.string()
-            .uuid(),
-
+        formId: z.string().uuid(),
+        label: z.string(),
+        type: z.string(),
+        placeholder: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        options: z.any().optional().nullable(),
+        isRequired: z.boolean().optional().default(false),
+        validationRules: z.any().optional().nullable(),
+        conditionalLogic: z.any().optional().nullable(),
       })
     )
+    .mutation(async ({ input }) => {
+      return await formFieldService.createField(input);
+    }),
 
-   .output(
-z.array(
-z.object({
+  listFields: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/form-fields/{formId}",
+        tags: ["Form Fields"],
+        summary: "List all fields for a form ordered by index",
+      },
+    })
+    .input(
+      z.object({
+        formId: z.string().uuid(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await formFieldService.getFields({ formId: input.formId });
+    }),
 
-id:
-z.string(),
+  updateField: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "PATCH",
+        path: "/form-fields/{fieldId}",
+        tags: ["Form Fields"],
+        summary: "Update field label, options, validation rules, or conditional logic",
+      },
+    })
+    .input(
+      z.object({
+        fieldId: z.string().uuid(),
+        label: z.string().optional(),
+        type: z.string().optional(),
+        placeholder: z.string().optional().nullable(),
+        description: z.string().optional().nullable(),
+        options: z.any().optional().nullable(),
+        isRequired: z.boolean().optional(),
+        validationRules: z.any().optional().nullable(),
+        conditionalLogic: z.any().optional().nullable(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await formFieldService.updateField(input);
+    }),
 
-formId:
-z.string(),
+  reorderFields: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "PUT",
+        path: "/form-fields/reorder",
+        tags: ["Form Fields"],
+        summary: "Reorder form fields via array of field IDs",
+      },
+    })
+    .input(
+      z.object({
+        formId: z.string().uuid(),
+        fieldOrder: z.array(z.string().uuid()),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await formFieldService.reorderFields(input);
+    }),
 
-label:
-z.string(),
-
-labelKey:
-z.string(),
-
-type:
-z.string(),
-
-index:
-z.number(),
-
-placeholder:
-z.string()
-.nullable()
-.optional(),
-
-options:
-z.string()
-.nullable()
-.optional(),
-
-description:
-z.string()
-.nullable()
-.optional(),
-
-isRequired:
-z.boolean(),
-
-})
-)
-)
-
-.query(
-async ({ input }) => {
-
-return await
-formFieldService
-.getFields({
-
-formId:
-input.formId,
-
-});
-
-}
-),
-
-deleteField:
-authenticatedProcedure
-.input(
-z.object({
-
-fieldId:
-z.string()
-.uuid(),
-
-})
-)
-
-.mutation(
-async ({ input }) => {
-
-return await
-formFieldService
-.deleteField({
-
-fieldId:
-input.fieldId,
-
-});
-
-}
-),
-
-updateField:
-authenticatedProcedure
-
-.input(
-z.object({
-
-fieldId:
-z.string()
-.uuid(),
-
-label:
-z.string()
-.optional(),
-
-description:
-z.string()
-.optional(),
-
-options:
-z.string()
-.optional(),
-
-isRequired:
-z.boolean()
-.optional(),
-
-})
-)
-
-.mutation(
-async ({ input }) => {
-
-return await
-formFieldService
-.updateField({
-
-fieldId:
-input.fieldId,
-
-label:
-input.label,
-
-description:
-input.description,
-
-options:
-input.options,
-
-isRequired:
-input.isRequired,
-
-});
-
-}
-),
-
+  deleteField: authenticatedProcedure
+    .meta({
+      openapi: {
+        method: "DELETE",
+        path: "/form-fields/{fieldId}",
+        tags: ["Form Fields"],
+        summary: "Delete a field from a form",
+      },
+    })
+    .input(
+      z.object({
+        fieldId: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await formFieldService.deleteField({ fieldId: input.fieldId });
+    }),
 });

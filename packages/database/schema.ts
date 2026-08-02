@@ -2,3 +2,6 @@ export * from "./models/user";
 export * from "./models/form";
 export * from "./models/form-field";
 export * from "./models/form-submission";
+export * from "./models/theme";
+export * from "./models/analytics-event";
+export * from "./models/response-answer";
