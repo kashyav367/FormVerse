@@ -161,6 +161,12 @@ Visit **[https://formverse-1.onrender.com/docs](https://formverse-1.onrender.com
 
 ---
 
+## 👨‍💻 Author
+
+**Ankit Kumar Singh**
+
+---
+
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
