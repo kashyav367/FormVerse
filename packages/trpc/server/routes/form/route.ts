@@ -27,6 +27,11 @@ export const formRouter = router({
         icon: z.string().optional(),
       })
     )
+    .output(
+      z.object({
+        id: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       return await formService.createForm({
         ...input,
@@ -50,6 +55,7 @@ export const formRouter = router({
         isPublished: z.boolean().optional(),
       }).optional()
     )
+    .output(z.array(z.any()))
     .query(async ({ ctx, input }) => {
       return await formService.listFormByUserId({
         userId: ctx.user.id,
@@ -71,6 +77,11 @@ export const formRouter = router({
     .input(
       z.object({
         formId: z.string().uuid(),
+      })
+    )
+    .output(
+      z.object({
+        id: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -101,6 +112,7 @@ export const formRouter = router({
         closedMessage: z.string().optional(),
       })
     )
+    .output(z.any())
     .mutation(async ({ input }) => {
       return await formService.updateForm(input as any);
     }),
@@ -119,6 +131,7 @@ export const formRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(z.any())
     .query(async ({ input }) => {
       return await formService.getFormById(input.formId);
     }),
@@ -136,6 +149,7 @@ export const formRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(z.any())
     .query(async ({ input }) => {
       const form = await formService.getFormById(input.formId);
       if (!form.isPublished) {
@@ -145,6 +159,7 @@ export const formRouter = router({
     }),
 
   listPublicForms: publicProcedure
+    .output(z.array(z.any()))
     .query(async () => {
       return await formService.getPublicForms();
     }),
@@ -163,6 +178,11 @@ export const formRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(
+      z.object({
+        id: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       return await formService.duplicateForm({
         formId: input.formId,
@@ -179,6 +199,14 @@ export const formRouter = router({
         protect: true,
       },
     })
+    .output(
+      z.object({
+        totalForms: z.number(),
+        publishedForms: z.number(),
+        unlistedForms: z.number(),
+        totalResponses: z.number(),
+      })
+    )
     .query(async ({ ctx }) => {
       return await formService.getDashboardStats(ctx.user.id);
     }),

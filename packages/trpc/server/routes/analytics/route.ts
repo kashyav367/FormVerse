@@ -18,6 +18,7 @@ export const analyticsRouter = router({
         eventType: z.enum(["VIEW", "START", "SUBMIT"]),
       })
     )
+    .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input, ctx }) => {
       return await analyticsService.trackEvent(input.formId, input.eventType);
     }),
@@ -36,6 +37,16 @@ export const analyticsRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(
+      z.object({
+        totalViews: z.number(),
+        totalStarts: z.number(),
+        totalSubmissions: z.number(),
+        conversionRate: z.number(),
+        startRate: z.number(),
+        avgCompletionTimeSeconds: z.number(),
+      })
+    )
     .query(async ({ input }) => {
       return await analyticsService.getOverviewStats(input.formId);
     }),
@@ -52,6 +63,12 @@ export const analyticsRouter = router({
     .input(
       z.object({
         formId: z.string().uuid(),
+      })
+    )
+    .output(
+      z.object({
+        totalSubmissions: z.number(),
+        fields: z.array(z.any()),
       })
     )
     .query(async ({ input }) => {

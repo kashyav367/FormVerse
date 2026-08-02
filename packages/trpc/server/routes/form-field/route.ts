@@ -25,6 +25,13 @@ export const formFieldRouter = router({
         conditionalLogic: z.any().optional().nullable(),
       })
     )
+    .output(
+      z.object({
+        id: z.string(),
+        labelKey: z.string(),
+        index: z.number(),
+      })
+    )
     .mutation(async ({ input }) => {
       return await formFieldService.createField(input);
     }),
@@ -43,6 +50,7 @@ export const formFieldRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(z.array(z.any()))
     .query(async ({ input }) => {
       return await formFieldService.getFields({ formId: input.formId });
     }),
@@ -69,6 +77,7 @@ export const formFieldRouter = router({
         conditionalLogic: z.any().optional().nullable(),
       })
     )
+    .output(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       return await formFieldService.updateField(input);
     }),
@@ -88,6 +97,7 @@ export const formFieldRouter = router({
         fieldOrder: z.array(z.string().uuid()),
       })
     )
+    .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input }) => {
       return await formFieldService.reorderFields(input);
     }),
@@ -106,6 +116,7 @@ export const formFieldRouter = router({
         fieldId: z.string().uuid(),
       })
     )
+    .output(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
       return await formFieldService.deleteField({ fieldId: input.fieldId });
     }),

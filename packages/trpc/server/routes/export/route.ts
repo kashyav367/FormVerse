@@ -17,6 +17,13 @@ export const exportRouter = router({
         formId: z.string().uuid(),
       })
     )
+    .output(
+      z.object({
+        filename: z.string(),
+        csvContent: z.string(),
+        count: z.number(),
+      })
+    )
     .query(async ({ input }) => {
       return await exportService.exportSubmissionsToCSV(input.formId);
     }),

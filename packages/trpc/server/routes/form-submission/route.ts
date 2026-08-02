@@ -21,6 +21,12 @@ export const formSubmissionRouter = router({
         honeypotTrap: z.string().optional(),
       })
     )
+    .output(
+      z.object({
+        id: z.string(),
+        submittedAt: z.any(),
+      })
+    )
     .mutation(async ({ input }) => {
       return await formSubmissionService.createSubmission(input);
     }),
@@ -42,6 +48,15 @@ export const formSubmissionRouter = router({
         limit: z.number().optional().default(50),
       })
     )
+    .output(
+      z.object({
+        submissions: z.array(z.any()),
+        totalCount: z.number(),
+        page: z.number(),
+        limit: z.number(),
+        totalPages: z.number(),
+      })
+    )
     .query(async ({ input }) => {
       return await formSubmissionService.getSubmissions(input);
     }),
@@ -60,6 +75,7 @@ export const formSubmissionRouter = router({
         submissionId: z.string().uuid(),
       })
     )
+    .output(z.any())
     .query(async ({ input }) => {
       return await formSubmissionService.getSubmissionById(input.submissionId);
     }),
@@ -78,6 +94,7 @@ export const formSubmissionRouter = router({
         submissionId: z.string().uuid(),
       })
     )
+    .output(z.object({ success: z.boolean() }))
     .mutation(async ({ input }) => {
       return await formSubmissionService.deleteSubmission(input.submissionId);
     }),
