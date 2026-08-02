@@ -26,69 +26,10 @@ const TEMPLATES = [
 ];
 
 const THEMES = {
-  Aurora: {
-    name: "Aurora Cyber",
-    subtitle: "Dark Neon Glass",
-    page: "#0b0f19",
-    card: "#111827",
-    preview: "#1e293b",
-    buttonFrom: "#06b6d4",
-    buttonTo: "#8b5cf6",
-    accent: "#06b6d4",
-    bar: "#06b6d4",
-    isDark: true,
-  },
-  VSCode: {
-    name: "VS Code Dark",
-    subtitle: "IDE Syntax Theme",
-    page: "#181818",
-    card: "#1e1e1e",
-    preview: "#252526",
-    buttonFrom: "#007acc",
-    buttonTo: "#005a9e",
-    accent: "#007acc",
-    bar: "#007acc",
-    isDark: true,
-  },
-  MacOS: {
-    name: "macOS Glass",
-    subtitle: "Apple Sonoma Dark",
-    page: "#0f172a",
-    card: "#1e1b4b",
-    preview: "#31103f",
-    buttonFrom: "#3b82f6",
-    buttonTo: "#4f46e5",
-    accent: "#3b82f6",
-    bar: "#3b82f6",
-    isDark: true,
-  },
-  Windows11: {
-    name: "Windows 11 Mica",
-    subtitle: "Fluent Acrylic",
-    page: "#0f172a",
-    card: "#111c38",
-    preview: "#1e293b",
-    buttonFrom: "#0078d4",
-    buttonTo: "#106ebe",
-    accent: "#0078d4",
-    bar: "#0078d4",
-    isDark: true,
-  },
-  Anime: {
-    name: "Anime Cyber Kawaii",
-    subtitle: "Tokyo Sparkle Cyber",
-    page: "#130022",
-    card: "#1a0033",
-    preview: "#240046",
-    buttonFrom: "#ff00a0",
-    buttonTo: "#7b2cbf",
-    accent: "#ff00a0",
-    bar: "#ff00a0",
-    isDark: true,
-  },
+  // ── 3 WHITE BACKGROUND THEMES ──
   Sakura: {
     name: "Sakura Blossom",
-    subtitle: "Japanese Minimal",
+    subtitle: "🌸 White Rose-Gold",
     page: "#fff0f3",
     card: "#ffffff",
     preview: "#fff0f1",
@@ -97,34 +38,65 @@ const THEMES = {
     accent: "#f43f5e",
     bar: "#f43f5e",
     isDark: false,
+    mode: "WHITE",
   },
-  Kyoto: {
-    name: "Kyoto Sunset",
-    subtitle: "Warm Obsidian",
-    page: "#1c120c",
-    card: "#241710",
-    preview: "#2a1a12",
-    buttonFrom: "#f59e0b",
-    buttonTo: "#d97706",
-    accent: "#f59e0b",
-    bar: "#f59e0b",
-    isDark: true,
+  AppleWhite: {
+    name: "Apple Studio White",
+    subtitle: "🍏 Pure White Minimal",
+    page: "#f8fafc",
+    card: "#ffffff",
+    preview: "#f1f5f9",
+    buttonFrom: "#2563eb",
+    buttonTo: "#4f46e5",
+    accent: "#2563eb",
+    bar: "#2563eb",
+    isDark: false,
+    mode: "WHITE",
   },
-  Zen: {
-    name: "Emerald Zen",
-    subtitle: "Forest Glass",
-    page: "#061e14",
-    card: "#0c3222",
-    preview: "#0b2d1f",
+  EmeraldMint: {
+    name: "Emerald Mint",
+    subtitle: "🍃 White Sage Mint",
+    page: "#f2f7f4",
+    card: "#ffffff",
+    preview: "#e6f2ed",
     buttonFrom: "#10b981",
-    buttonTo: "#06b6d4",
+    buttonTo: "#0d9488",
     accent: "#10b981",
     bar: "#10b981",
+    isDark: false,
+    mode: "WHITE",
+  },
+
+  // ── 3 BLACK BACKGROUND THEMES ──
+  Discord: {
+    name: "Discord Dark",
+    subtitle: "🎮 Black Blurple Theme",
+    page: "#313338",
+    card: "#1e1f22",
+    preview: "#2b2d31",
+    buttonFrom: "#5865f2",
+    buttonTo: "#4752c4",
+    accent: "#5865f2",
+    bar: "#5865f2",
     isDark: true,
+    mode: "BLACK",
+  },
+  Aurora: {
+    name: "Aurora Cyber",
+    subtitle: "⚡ Black Neon Glass",
+    page: "#0b0f19",
+    card: "#111827",
+    preview: "#1e293b",
+    buttonFrom: "#06b6d4",
+    buttonTo: "#8b5cf6",
+    accent: "#06b6d4",
+    bar: "#06b6d4",
+    isDark: true,
+    mode: "BLACK",
   },
   Cyberpunk: {
     name: "Synthwave Cyber",
-    subtitle: "Neon Vaporwave",
+    subtitle: "🌌 Black Neon Pink",
     page: "#0d0714",
     card: "#160826",
     preview: "#1a0b2e",
@@ -133,25 +105,14 @@ const THEMES = {
     accent: "#ff007f",
     bar: "#ff007f",
     isDark: true,
-  },
-  Obsidian: {
-    name: "Obsidian Black",
-    subtitle: "Ultra OLED Minimal",
-    page: "#050505",
-    card: "#111111",
-    preview: "#18181b",
-    buttonFrom: "#ffffff",
-    buttonTo: "#e4e4e7",
-    accent: "#ffffff",
-    bar: "#ffffff",
-    isDark: true,
+    mode: "BLACK",
   },
 } as const;
 
 export default function CreateFormPage() {
   const router = useRouter();
 
-  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("Aurora");
+  const [selectedTheme, setSelectedTheme] = useState<ThemeKey>("Discord");
   const [selectedTemplate, setSelectedTemplate] = useState("Feedback");
   const [visibility, setVisibility] = useState<Visibility>("UNLISTED");
 
@@ -236,14 +197,14 @@ export default function CreateFormPage() {
             </h1>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", color: theme.isDark ? "#94a3b8" : "#888", fontSize: 16, marginBottom: 40, lineHeight: 1.6 }}>
-              Select an ultra-cool theme (VS Code, macOS, Windows 11, Anime, etc.) & template to transform your public forms.
+              Choose from 6 curated themes: 3 White/Light Mode + 3 Black/Dark Mode (including Discord Dark).
             </p>
 
             {/* Theme picker */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, marginBottom: 14 }}>
                 <WandSparkles size={16} style={{ color: theme.accent }} />
-                Choose Ultra Theme (10 Presets)
+                6 Best Themes (3 White + 3 Black)
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -270,10 +231,15 @@ export default function CreateFormPage() {
                         <div style={{ width: 8, background: val.bar, flexShrink: 0 }} />
                         <div style={{ background: val.isDark ? "#1e293b" : "#fff", padding: "14px", flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <div>
-                            <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, marginBottom: 2, color: val.isDark ? "#fff" : "#1a1a1a" }}>
-                              {val.name}
-                            </p>
-                            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: val.isDark ? "#94a3b8" : "#aaa" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                              <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 4, background: val.mode === "WHITE" ? "#f1f5f9" : "#0f172a", color: val.mode === "WHITE" ? "#334155" : "#94a3b8" }}>
+                                {val.mode}
+                              </span>
+                              <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 13.5, color: val.isDark ? "#fff" : "#1a1a1a" }}>
+                                {val.name}
+                              </p>
+                            </div>
+                            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11.5, color: val.isDark ? "#94a3b8" : "#aaa" }}>
                               {val.subtitle}
                             </p>
                           </div>
@@ -430,7 +396,7 @@ export default function CreateFormPage() {
                   height: 52,
                   borderRadius: 20,
                   background: `linear-gradient(135deg, ${theme.buttonFrom}, ${theme.buttonTo})`,
-                  color: selectedTheme === "Obsidian" ? "#000" : "#fff",
+                  color: "#fff",
                   border: "none",
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: 16,

@@ -21,6 +21,7 @@ type FormField = {
 
 type ThemeConfig = {
   name: string;
+  type: "WHITE" | "BLACK";
   bg: string;
   cardBg: string;
   cardBorder: string;
@@ -33,6 +34,7 @@ type ThemeConfig = {
   isDark?: boolean;
   blob1?: string;
   blob2?: string;
+  isDiscord?: boolean;
   isVSCode?: boolean;
   isMacOS?: boolean;
   isWindows?: boolean;
@@ -40,8 +42,75 @@ type ThemeConfig = {
 };
 
 const themes: Record<string, ThemeConfig> = {
+  // ── 3 WHITE / LIGHT BACKGROUND THEMES ──
+  Sakura: {
+    name: "Sakura Blossom (White)",
+    type: "WHITE",
+    bg: "bg-gradient-to-br from-[#fff0f3] via-[#fff5f7] to-[#ffe6ec]",
+    cardBg: "bg-white/95 backdrop-blur-xl",
+    cardBorder: "border-rose-300/60 shadow-[0_20px_60px_rgba(244,63,94,0.12)]",
+    text: "text-[#68182b]",
+    sub: "text-[#9f495e]",
+    input: "bg-[#fffafc] border-rose-200 text-[#4c111e] placeholder-rose-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-400/20",
+    button: "from-rose-500 via-pink-500 to-red-500 text-white shadow-[0_10px_30px_rgba(244,63,94,0.3)]",
+    badge: "bg-rose-100 text-rose-600 border border-rose-200 font-semibold",
+    accent: "#f43f5e",
+    isDark: false,
+    blob1: "bg-rose-300/30",
+    blob2: "bg-pink-300/30",
+  },
+  AppleWhite: {
+    name: "Apple Studio White (White)",
+    type: "WHITE",
+    bg: "bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0]",
+    cardBg: "bg-white backdrop-blur-2xl",
+    cardBorder: "border-slate-200/80 shadow-[0_25px_70px_rgba(15,23,42,0.07)]",
+    text: "text-slate-900",
+    sub: "text-slate-500",
+    input: "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20",
+    button: "from-blue-600 to-indigo-600 text-white shadow-[0_10px_30px_rgba(37,99,235,0.3)]",
+    badge: "bg-blue-50 text-blue-600 border border-blue-200 font-semibold",
+    accent: "#2563eb",
+    isDark: false,
+    blob1: "bg-blue-300/20",
+    blob2: "bg-indigo-300/20",
+  },
+  EmeraldMint: {
+    name: "Emerald Mint Paper (White)",
+    type: "WHITE",
+    bg: "bg-gradient-to-br from-[#f2f7f4] via-[#e6f2ed] to-[#d8ebd8]",
+    cardBg: "bg-white/95 backdrop-blur-xl",
+    cardBorder: "border-emerald-200/80 shadow-[0_20px_60px_rgba(16,185,129,0.08)]",
+    text: "text-[#064e3b]",
+    sub: "text-[#047857]",
+    input: "bg-[#f8fcf9] border-emerald-200 text-[#064e3b] placeholder-emerald-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-400/20",
+    button: "from-emerald-500 via-teal-600 to-cyan-600 text-white shadow-[0_10px_30px_rgba(16,185,129,0.3)]",
+    badge: "bg-emerald-100 text-emerald-700 border border-emerald-200 font-semibold",
+    accent: "#10b981",
+    isDark: false,
+    blob1: "bg-emerald-300/25",
+    blob2: "bg-teal-300/25",
+  },
+
+  // ── 3 BLACK / DARK BACKGROUND THEMES ──
+  Discord: {
+    name: "Discord Dark (Black)",
+    type: "BLACK",
+    bg: "bg-[#313338]",
+    cardBg: "bg-[#1e1f22]",
+    cardBorder: "border-[#383a40] shadow-[0_25px_80px_rgba(0,0,0,0.7)]",
+    text: "text-[#f2f3f5]",
+    sub: "text-[#b5bac1]",
+    input: "bg-[#383a40] border-[#4e5058] text-[#f2f3f5] placeholder-[#80848e] focus:border-[#5865f2] focus:ring-2 focus:ring-[#5865f2]/30",
+    button: "from-[#5865f2] to-[#4752c4] text-white shadow-[0_6px_24px_rgba(88,101,242,0.4)]",
+    badge: "bg-[#5865f2]/20 text-[#5865f2] border border-[#5865f2]/40 font-bold",
+    accent: "#5865f2",
+    isDark: true,
+    isDiscord: true,
+  },
   Aurora: {
-    name: "Aurora Cyber",
+    name: "Aurora Cyber (Black)",
+    type: "BLACK",
     bg: "bg-gradient-to-br from-[#0b0f19] via-[#111827] to-[#1e1b4b]",
     cardBg: "bg-slate-900/85 backdrop-blur-2xl",
     cardBorder: "border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.18)]",
@@ -49,20 +118,39 @@ const themes: Record<string, ThemeConfig> = {
     sub: "text-slate-400",
     input: "bg-slate-800/90 border-slate-700 text-white placeholder-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20",
     button: "from-cyan-500 via-indigo-500 to-fuchsia-500 text-white shadow-[0_0_30px_rgba(6,182,212,0.4)]",
-    badge: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30",
+    badge: "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-semibold",
     accent: "#06b6d4",
     isDark: true,
     blob1: "bg-cyan-500/25",
     blob2: "bg-fuchsia-500/25",
   },
+  Cyberpunk: {
+    name: "Synthwave Cyber (Black)",
+    type: "BLACK",
+    bg: "bg-gradient-to-br from-[#0d0714] via-[#1a0b2e] to-[#2a0845]",
+    cardBg: "bg-[#160826]/90 backdrop-blur-2xl",
+    cardBorder: "border-[#ff007f]/40 shadow-[0_0_50px_rgba(255,0,127,0.3)]",
+    text: "text-white",
+    sub: "text-purple-200/70",
+    input: "bg-[#0f041c] border-purple-800/70 text-pink-100 placeholder-purple-600 focus:border-[#ff007f] focus:ring-2 focus:ring-[#ff007f]/30",
+    button: "from-[#ff007f] via-[#b500ff] to-[#00f0ff] text-white shadow-[0_0_35px_rgba(255,0,127,0.5)]",
+    badge: "bg-pink-500/10 text-[#ff007f] border border-pink-500/40 font-semibold",
+    accent: "#ff007f",
+    isDark: true,
+    blob1: "bg-[#ff007f]/25",
+    blob2: "bg-[#00f0ff]/25",
+  },
+
+  // ── Fallback Aliases ──
   VSCode: {
     name: "VS Code Dark",
+    type: "BLACK",
     bg: "bg-[#181818]",
     cardBg: "bg-[#1e1e1e]",
     cardBorder: "border-[#333333] border-l-4 border-l-[#007acc] shadow-[0_20px_60px_rgba(0,0,0,0.8)]",
     text: "text-[#d4d4d4]",
     sub: "text-[#858585]",
-    input: "bg-[#3c3c3c] border-[#555555] text-[#ce9178] placeholder-[#777777] focus:border-[#007acc] focus:ring-1 focus:ring-[#007acc]",
+    input: "bg-[#3c3c3c] border-[#555555] text-[#ce9178] placeholder-[#777777] focus:border-[#007acc]",
     button: "from-[#007acc] to-[#005a9e] text-white shadow-[0_4px_16px_rgba(0,122,204,0.4)]",
     badge: "bg-[#007acc]/20 text-[#569cd6] border border-[#007acc]/40 font-mono",
     accent: "#007acc",
@@ -71,125 +159,90 @@ const themes: Record<string, ThemeConfig> = {
   },
   MacOS: {
     name: "macOS Glass",
+    type: "BLACK",
     bg: "bg-gradient-to-tr from-[#0f172a] via-[#1e1b4b] to-[#31103f]",
     cardBg: "bg-white/10 backdrop-blur-3xl",
     cardBorder: "border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.5)]",
     text: "text-white",
     sub: "text-slate-300/80",
-    input: "bg-black/30 border-white/15 text-white placeholder-slate-400 focus:border-blue-400 focus:bg-black/40 focus:ring-2 focus:ring-blue-400/20",
+    input: "bg-black/30 border-white/15 text-white placeholder-slate-400 focus:border-blue-400",
     button: "from-blue-500 to-indigo-600 text-white shadow-[0_10px_30px_rgba(59,130,246,0.4)]",
     badge: "bg-white/10 text-blue-300 border border-white/20",
     accent: "#3b82f6",
     isDark: true,
     isMacOS: true,
-    blob1: "bg-blue-500/20",
-    blob2: "bg-purple-500/20",
   },
   Windows11: {
     name: "Windows 11 Mica",
+    type: "BLACK",
     bg: "bg-gradient-to-br from-[#0f172a] via-[#111c38] to-[#0b1329]",
     cardBg: "bg-slate-900/90 backdrop-blur-2xl",
     cardBorder: "border-slate-700/60 shadow-[0_25px_80px_rgba(0,0,0,0.7)]",
     text: "text-slate-100",
     sub: "text-slate-400",
-    input: "bg-slate-800/80 border-slate-700 text-white placeholder-slate-500 focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30",
+    input: "bg-slate-800/80 border-slate-700 text-white placeholder-slate-500 focus:border-[#0078d4]",
     button: "from-[#0078d4] to-[#106ebe] text-white shadow-[0_6px_24px_rgba(0,120,212,0.4)]",
     badge: "bg-[#0078d4]/15 text-[#60a5fa] border border-[#0078d4]/30",
     accent: "#0078d4",
     isDark: true,
     isWindows: true,
-    blob1: "bg-[#0078d4]/20",
-    blob2: "bg-cyan-500/20",
   },
   Anime: {
     name: "Anime Cyber Kawaii",
+    type: "BLACK",
     bg: "bg-gradient-to-br from-[#130022] via-[#240046] to-[#3c096c]",
     cardBg: "bg-[#1a0033]/90 backdrop-blur-2xl",
     cardBorder: "border-[#ff00a0]/60 shadow-[0_0_50px_rgba(255,0,160,0.35)]",
     text: "text-pink-100",
     sub: "text-purple-300/80",
-    input: "bg-[#100020] border-[#ff00a0]/40 text-pink-50 placeholder-purple-500 focus:border-[#ff00a0] focus:ring-2 focus:ring-[#ff00a0]/40",
+    input: "bg-[#100020] border-[#ff00a0]/40 text-pink-50 placeholder-purple-500 focus:border-[#ff00a0]",
     button: "from-[#ff00a0] via-[#7b2cbf] to-[#00f0ff] text-white shadow-[0_0_35px_rgba(255,0,160,0.5)]",
     badge: "bg-[#ff00a0]/20 text-[#ff77e9] border border-[#ff00a0]/40 font-bold",
     accent: "#ff00a0",
     isDark: true,
     isAnime: true,
-    blob1: "bg-[#ff00a0]/25",
-    blob2: "bg-[#00f0ff]/25",
-  },
-  Sakura: {
-    name: "Sakura Blossom",
-    bg: "bg-gradient-to-br from-[#fff0f3] via-[#fff5f7] to-[#ffe6ec]",
-    cardBg: "bg-white/95 backdrop-blur-xl",
-    cardBorder: "border-rose-300/60 shadow-[0_20px_60px_rgba(244,63,94,0.12)]",
-    text: "text-[#68182b]",
-    sub: "text-[#9f495e]",
-    input: "bg-[#fffafc] border-rose-200 text-[#4c111e] placeholder-rose-300 focus:border-rose-500 focus:ring-2 focus:ring-rose-400/20",
-    button: "from-rose-500 via-pink-500 to-red-500 text-white shadow-[0_10px_30px_rgba(244,63,94,0.3)]",
-    badge: "bg-rose-100 text-rose-600 border border-rose-200",
-    accent: "#f43f5e",
-    blob1: "bg-rose-300/30",
-    blob2: "bg-pink-300/30",
   },
   Kyoto: {
     name: "Kyoto Sunset",
+    type: "BLACK",
     bg: "bg-gradient-to-br from-[#1c120c] via-[#2a1a12] to-[#120a06]",
     cardBg: "bg-[#241710]/90 backdrop-blur-2xl",
     cardBorder: "border-amber-600/35 shadow-[0_0_50px_rgba(217,119,6,0.18)]",
     text: "text-amber-50",
     sub: "text-amber-200/70",
-    input: "bg-[#180f0a] border-amber-900/70 text-amber-100 placeholder-amber-700 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20",
+    input: "bg-[#180f0a] border-amber-900/70 text-amber-100 placeholder-amber-700",
     button: "from-amber-500 via-orange-500 to-rose-600 text-white shadow-[0_0_30px_rgba(245,158,11,0.35)]",
     badge: "bg-amber-500/10 text-amber-400 border border-amber-500/30",
     accent: "#f59e0b",
     isDark: true,
-    blob1: "bg-amber-500/20",
-    blob2: "bg-orange-500/20",
   },
   Zen: {
     name: "Emerald Zen",
+    type: "BLACK",
     bg: "bg-gradient-to-br from-[#061e14] via-[#0b2d1f] to-[#04140d]",
     cardBg: "bg-[#0c3222]/90 backdrop-blur-2xl",
     cardBorder: "border-emerald-500/35 shadow-[0_0_50px_rgba(16,185,129,0.18)]",
     text: "text-emerald-50",
     sub: "text-emerald-200/70",
-    input: "bg-[#061a11] border-emerald-800/70 text-emerald-100 placeholder-emerald-700 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20",
+    input: "bg-[#061a11] border-emerald-800/70 text-emerald-100 placeholder-emerald-700",
     button: "from-emerald-400 via-teal-500 to-cyan-500 text-slate-950 shadow-[0_0_30px_rgba(16,185,129,0.35)]",
     badge: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
     accent: "#10b981",
     isDark: true,
-    blob1: "bg-emerald-500/20",
-    blob2: "bg-teal-500/20",
-  },
-  Cyberpunk: {
-    name: "Synthwave Cyber",
-    bg: "bg-gradient-to-br from-[#0d0714] via-[#1a0b2e] to-[#2a0845]",
-    cardBg: "bg-[#160826]/90 backdrop-blur-2xl",
-    cardBorder: "border-[#ff007f]/40 shadow-[0_0_50px_rgba(255,0,127,0.3)]",
-    text: "text-white",
-    sub: "text-purple-200/70",
-    input: "bg-[#0f041c] border-purple-800/70 text-pink-100 placeholder-purple-600 focus:border-[#ff007f] focus:ring-2 focus:ring-[#ff007f]/30",
-    button: "from-[#ff007f] via-[#b500ff] to-[#00f0ff] text-white shadow-[0_0_35px_rgba(255,0,127,0.5)]",
-    badge: "bg-pink-500/10 text-[#ff007f] border border-pink-500/40",
-    accent: "#ff007f",
-    isDark: true,
-    blob1: "bg-[#ff007f]/25",
-    blob2: "bg-[#00f0ff]/25",
   },
   Obsidian: {
     name: "Obsidian Black",
+    type: "BLACK",
     bg: "bg-[#050505]",
     cardBg: "bg-[#111111]/95 backdrop-blur-2xl",
     cardBorder: "border-[#262626] shadow-[0_20px_70px_rgba(0,0,0,0.95)]",
     text: "text-white",
     sub: "text-zinc-400",
-    input: "bg-[#18181b] border-[#27272a] text-white placeholder-zinc-600 focus:border-zinc-300 focus:ring-2 focus:ring-white/10",
+    input: "bg-[#18181b] border-[#27272a] text-white placeholder-zinc-600",
     button: "from-zinc-100 via-white to-zinc-300 text-black shadow-[0_0_30px_rgba(255,255,255,0.25)]",
     badge: "bg-zinc-800 text-zinc-300 border border-zinc-700",
     accent: "#ffffff",
     isDark: true,
-    blob1: "bg-zinc-700/15",
-    blob2: "bg-zinc-600/15",
   },
 };
 
@@ -429,19 +482,27 @@ export default function PublicFormPage() {
       <div className="max-w-2xl mx-auto relative z-10 form-wrap">
         <div className={`rounded-[38px] overflow-hidden p-8 md:p-12 border ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
           
-          {/* OS Window Header Decoration */}
+          {/* OS / App Window Header Decoration */}
+          {currentTheme.isDiscord && (
+            <div className="flex items-center gap-2 mb-6 pb-3 border-b border-[#383a40]">
+              <span className="w-3 h-3 rounded-full bg-[#5865f2]" />
+              <span className="text-xs font-bold text-[#f2f3f5] tracking-wide"># formverse-general</span>
+              <span className="ml-auto text-xs text-[#80848e]">Discord Dark Engine</span>
+            </div>
+          )}
+
           {currentTheme.isMacOS && (
             <div className="flex items-center gap-2 mb-6 pb-4 border-b border-white/10">
               <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] shadow-sm" />
               <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] shadow-sm" />
               <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] shadow-sm" />
-              <span className="ml-auto text-xs text-slate-400 font-medium tracking-wide">formverse.app — macOS Sonoma</span>
+              <span className="ml-auto text-xs text-slate-400 font-medium tracking-wide">formverse.app — macOS</span>
             </div>
           )}
 
           {currentTheme.isWindows && (
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-700/50">
-              <span className="text-xs text-slate-400 font-semibold tracking-wide">FormVerse — Windows 11 Fluent</span>
+              <span className="text-xs text-slate-400 font-semibold tracking-wide">FormVerse — Windows 11</span>
               <div className="flex items-center gap-3 text-slate-400 text-xs font-mono">
                 <span>—</span>
                 <span>□</span>
@@ -457,17 +518,10 @@ export default function PublicFormPage() {
             </div>
           )}
 
-          {currentTheme.isAnime && (
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#ff00a0]/30">
-              <span className="text-xs font-bold tracking-widest text-[#ff00a0] uppercase">🌸 Anime Kawaii Cyber Engine ✨</span>
-              <span className="text-sm">⭐ ⚡ 🌸</span>
-            </div>
-          )}
-
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
             <div className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${currentTheme.badge}`}>
-              {currentTheme.isAnime ? "🌸 " : currentTheme.isVSCode ? "💻 " : currentTheme.isMacOS ? "🍎 " : currentTheme.isWindows ? "🪟 " : "⚡ "}
+              {currentTheme.isDiscord ? "🎮 " : currentTheme.type === "WHITE" ? "☀️ " : "🌙 "}
               {currentTheme.name}
             </div>
             <div style={{ padding: "6px 14px", borderRadius: 50, fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 13, fontWeight: 600, opacity: 0.8 }} className={currentTheme.sub}>
@@ -476,7 +530,7 @@ export default function PublicFormPage() {
           </div>
 
           <h1 className={`${currentTheme.text}`} style={{ fontFamily: currentTheme.isVSCode ? "'Fira Code', monospace" : "'Playfair Display', serif", fontSize: "clamp(36px,5vw,54px)", fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.5px", marginBottom: 14 }}>
-            {currentTheme.isVSCode ? `<Form title="${form.title}" />` : form.title}
+            {form.title}
           </h1>
 
           {form.description && (
