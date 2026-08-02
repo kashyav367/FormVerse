@@ -38,6 +38,54 @@ const THEMES = {
     bar: "#06b6d4",
     isDark: true,
   },
+  VSCode: {
+    name: "VS Code Dark",
+    subtitle: "IDE Syntax Theme",
+    page: "#181818",
+    card: "#1e1e1e",
+    preview: "#252526",
+    buttonFrom: "#007acc",
+    buttonTo: "#005a9e",
+    accent: "#007acc",
+    bar: "#007acc",
+    isDark: true,
+  },
+  MacOS: {
+    name: "macOS Glass",
+    subtitle: "Apple Sonoma Dark",
+    page: "#0f172a",
+    card: "#1e1b4b",
+    preview: "#31103f",
+    buttonFrom: "#3b82f6",
+    buttonTo: "#4f46e5",
+    accent: "#3b82f6",
+    bar: "#3b82f6",
+    isDark: true,
+  },
+  Windows11: {
+    name: "Windows 11 Mica",
+    subtitle: "Fluent Acrylic",
+    page: "#0f172a",
+    card: "#111c38",
+    preview: "#1e293b",
+    buttonFrom: "#0078d4",
+    buttonTo: "#106ebe",
+    accent: "#0078d4",
+    bar: "#0078d4",
+    isDark: true,
+  },
+  Anime: {
+    name: "Anime Cyber Kawaii",
+    subtitle: "Tokyo Sparkle Cyber",
+    page: "#130022",
+    card: "#1a0033",
+    preview: "#240046",
+    buttonFrom: "#ff00a0",
+    buttonTo: "#7b2cbf",
+    accent: "#ff00a0",
+    bar: "#ff00a0",
+    isDark: true,
+  },
   Sakura: {
     name: "Sakura Blossom",
     subtitle: "Japanese Minimal",
@@ -188,14 +236,14 @@ export default function CreateFormPage() {
             </h1>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", color: theme.isDark ? "#94a3b8" : "#888", fontSize: 16, marginBottom: 40, lineHeight: 1.6 }}>
-              Select a ultra-cool theme & template to instantly transform your public forms into high-converting experiences.
+              Select an ultra-cool theme (VS Code, macOS, Windows 11, Anime, etc.) & template to transform your public forms.
             </p>
 
             {/* Theme picker */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, marginBottom: 14 }}>
                 <WandSparkles size={16} style={{ color: theme.accent }} />
-                Choose Ultra Theme (6 Presets)
+                Choose Ultra Theme (10 Presets)
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>

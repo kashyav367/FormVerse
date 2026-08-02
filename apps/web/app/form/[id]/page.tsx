@@ -20,6 +20,7 @@ type FormField = {
 };
 
 type ThemeConfig = {
+  name: string;
   bg: string;
   cardBg: string;
   cardBorder: string;
@@ -32,10 +33,15 @@ type ThemeConfig = {
   isDark?: boolean;
   blob1?: string;
   blob2?: string;
+  isVSCode?: boolean;
+  isMacOS?: boolean;
+  isWindows?: boolean;
+  isAnime?: boolean;
 };
 
 const themes: Record<string, ThemeConfig> = {
   Aurora: {
+    name: "Aurora Cyber",
     bg: "bg-gradient-to-br from-[#0b0f19] via-[#111827] to-[#1e1b4b]",
     cardBg: "bg-slate-900/85 backdrop-blur-2xl",
     cardBorder: "border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.18)]",
@@ -49,7 +55,70 @@ const themes: Record<string, ThemeConfig> = {
     blob1: "bg-cyan-500/25",
     blob2: "bg-fuchsia-500/25",
   },
+  VSCode: {
+    name: "VS Code Dark",
+    bg: "bg-[#181818]",
+    cardBg: "bg-[#1e1e1e]",
+    cardBorder: "border-[#333333] border-l-4 border-l-[#007acc] shadow-[0_20px_60px_rgba(0,0,0,0.8)]",
+    text: "text-[#d4d4d4]",
+    sub: "text-[#858585]",
+    input: "bg-[#3c3c3c] border-[#555555] text-[#ce9178] placeholder-[#777777] focus:border-[#007acc] focus:ring-1 focus:ring-[#007acc]",
+    button: "from-[#007acc] to-[#005a9e] text-white shadow-[0_4px_16px_rgba(0,122,204,0.4)]",
+    badge: "bg-[#007acc]/20 text-[#569cd6] border border-[#007acc]/40 font-mono",
+    accent: "#007acc",
+    isDark: true,
+    isVSCode: true,
+  },
+  MacOS: {
+    name: "macOS Glass",
+    bg: "bg-gradient-to-tr from-[#0f172a] via-[#1e1b4b] to-[#31103f]",
+    cardBg: "bg-white/10 backdrop-blur-3xl",
+    cardBorder: "border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.5)]",
+    text: "text-white",
+    sub: "text-slate-300/80",
+    input: "bg-black/30 border-white/15 text-white placeholder-slate-400 focus:border-blue-400 focus:bg-black/40 focus:ring-2 focus:ring-blue-400/20",
+    button: "from-blue-500 to-indigo-600 text-white shadow-[0_10px_30px_rgba(59,130,246,0.4)]",
+    badge: "bg-white/10 text-blue-300 border border-white/20",
+    accent: "#3b82f6",
+    isDark: true,
+    isMacOS: true,
+    blob1: "bg-blue-500/20",
+    blob2: "bg-purple-500/20",
+  },
+  Windows11: {
+    name: "Windows 11 Mica",
+    bg: "bg-gradient-to-br from-[#0f172a] via-[#111c38] to-[#0b1329]",
+    cardBg: "bg-slate-900/90 backdrop-blur-2xl",
+    cardBorder: "border-slate-700/60 shadow-[0_25px_80px_rgba(0,0,0,0.7)]",
+    text: "text-slate-100",
+    sub: "text-slate-400",
+    input: "bg-slate-800/80 border-slate-700 text-white placeholder-slate-500 focus:border-[#0078d4] focus:ring-2 focus:ring-[#0078d4]/30",
+    button: "from-[#0078d4] to-[#106ebe] text-white shadow-[0_6px_24px_rgba(0,120,212,0.4)]",
+    badge: "bg-[#0078d4]/15 text-[#60a5fa] border border-[#0078d4]/30",
+    accent: "#0078d4",
+    isDark: true,
+    isWindows: true,
+    blob1: "bg-[#0078d4]/20",
+    blob2: "bg-cyan-500/20",
+  },
+  Anime: {
+    name: "Anime Cyber Kawaii",
+    bg: "bg-gradient-to-br from-[#130022] via-[#240046] to-[#3c096c]",
+    cardBg: "bg-[#1a0033]/90 backdrop-blur-2xl",
+    cardBorder: "border-[#ff00a0]/60 shadow-[0_0_50px_rgba(255,0,160,0.35)]",
+    text: "text-pink-100",
+    sub: "text-purple-300/80",
+    input: "bg-[#100020] border-[#ff00a0]/40 text-pink-50 placeholder-purple-500 focus:border-[#ff00a0] focus:ring-2 focus:ring-[#ff00a0]/40",
+    button: "from-[#ff00a0] via-[#7b2cbf] to-[#00f0ff] text-white shadow-[0_0_35px_rgba(255,0,160,0.5)]",
+    badge: "bg-[#ff00a0]/20 text-[#ff77e9] border border-[#ff00a0]/40 font-bold",
+    accent: "#ff00a0",
+    isDark: true,
+    isAnime: true,
+    blob1: "bg-[#ff00a0]/25",
+    blob2: "bg-[#00f0ff]/25",
+  },
   Sakura: {
+    name: "Sakura Blossom",
     bg: "bg-gradient-to-br from-[#fff0f3] via-[#fff5f7] to-[#ffe6ec]",
     cardBg: "bg-white/95 backdrop-blur-xl",
     cardBorder: "border-rose-300/60 shadow-[0_20px_60px_rgba(244,63,94,0.12)]",
@@ -63,6 +132,7 @@ const themes: Record<string, ThemeConfig> = {
     blob2: "bg-pink-300/30",
   },
   Kyoto: {
+    name: "Kyoto Sunset",
     bg: "bg-gradient-to-br from-[#1c120c] via-[#2a1a12] to-[#120a06]",
     cardBg: "bg-[#241710]/90 backdrop-blur-2xl",
     cardBorder: "border-amber-600/35 shadow-[0_0_50px_rgba(217,119,6,0.18)]",
@@ -77,6 +147,7 @@ const themes: Record<string, ThemeConfig> = {
     blob2: "bg-orange-500/20",
   },
   Zen: {
+    name: "Emerald Zen",
     bg: "bg-gradient-to-br from-[#061e14] via-[#0b2d1f] to-[#04140d]",
     cardBg: "bg-[#0c3222]/90 backdrop-blur-2xl",
     cardBorder: "border-emerald-500/35 shadow-[0_0_50px_rgba(16,185,129,0.18)]",
@@ -91,6 +162,7 @@ const themes: Record<string, ThemeConfig> = {
     blob2: "bg-teal-500/20",
   },
   Cyberpunk: {
+    name: "Synthwave Cyber",
     bg: "bg-gradient-to-br from-[#0d0714] via-[#1a0b2e] to-[#2a0845]",
     cardBg: "bg-[#160826]/90 backdrop-blur-2xl",
     cardBorder: "border-[#ff007f]/40 shadow-[0_0_50px_rgba(255,0,127,0.3)]",
@@ -105,6 +177,7 @@ const themes: Record<string, ThemeConfig> = {
     blob2: "bg-[#00f0ff]/25",
   },
   Obsidian: {
+    name: "Obsidian Black",
     bg: "bg-[#050505]",
     cardBg: "bg-[#111111]/95 backdrop-blur-2xl",
     cardBorder: "border-[#262626] shadow-[0_20px_70px_rgba(0,0,0,0.95)]",
@@ -292,7 +365,7 @@ export default function PublicFormPage() {
   return (
     <div className={`min-h-screen relative overflow-hidden px-4 py-16 md:py-24 ${currentTheme.bg}`}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap');
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes floatSlow { 0%,100%{ transform: translateY(0px) scale(1); } 50%{ transform: translateY(-20px) scale(1.05); } }
         @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
@@ -354,23 +427,60 @@ export default function PublicFormPage() {
       />
 
       <div className="max-w-2xl mx-auto relative z-10 form-wrap">
-        <div className={`rounded-[38px] p-8 md:p-12 border ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
+        <div className={`rounded-[38px] overflow-hidden p-8 md:p-12 border ${currentTheme.cardBg} ${currentTheme.cardBorder}`}>
+          
+          {/* OS Window Header Decoration */}
+          {currentTheme.isMacOS && (
+            <div className="flex items-center gap-2 mb-6 pb-4 border-b border-white/10">
+              <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] shadow-sm" />
+              <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] shadow-sm" />
+              <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] shadow-sm" />
+              <span className="ml-auto text-xs text-slate-400 font-medium tracking-wide">formverse.app — macOS Sonoma</span>
+            </div>
+          )}
+
+          {currentTheme.isWindows && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-700/50">
+              <span className="text-xs text-slate-400 font-semibold tracking-wide">FormVerse — Windows 11 Fluent</span>
+              <div className="flex items-center gap-3 text-slate-400 text-xs font-mono">
+                <span>—</span>
+                <span>□</span>
+                <span className="text-rose-400">✕</span>
+              </div>
+            </div>
+          )}
+
+          {currentTheme.isVSCode && (
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-[#333333] font-mono text-xs text-[#858585]">
+              <span className="text-[#569cd6]">import <span className="text-[#ce9178]">"formverse"</span>;</span>
+              <span className="bg-[#007acc] text-white px-2 py-0.5 rounded text-[11px]">TSX</span>
+            </div>
+          )}
+
+          {currentTheme.isAnime && (
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#ff00a0]/30">
+              <span className="text-xs font-bold tracking-widest text-[#ff00a0] uppercase">🌸 Anime Kawaii Cyber Engine ✨</span>
+              <span className="text-sm">⭐ ⚡ 🌸</span>
+            </div>
+          )}
+
           {/* Header */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
             <div className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider ${currentTheme.badge}`}>
-              ⚡ FormVerse Premium
+              {currentTheme.isAnime ? "🌸 " : currentTheme.isVSCode ? "💻 " : currentTheme.isMacOS ? "🍎 " : currentTheme.isWindows ? "🪟 " : "⚡ "}
+              {currentTheme.name}
             </div>
             <div style={{ padding: "6px 14px", borderRadius: 50, fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 13, fontWeight: 600, opacity: 0.8 }} className={currentTheme.sub}>
               {completedFields} / {visibleFields.length} Completed
             </div>
           </div>
 
-          <h1 className={`${currentTheme.text}`} style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(36px,5vw,56px)", fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.5px", marginBottom: 14 }}>
-            {form.title}
+          <h1 className={`${currentTheme.text}`} style={{ fontFamily: currentTheme.isVSCode ? "'Fira Code', monospace" : "'Playfair Display', serif", fontSize: "clamp(36px,5vw,54px)", fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.5px", marginBottom: 14 }}>
+            {currentTheme.isVSCode ? `<Form title="${form.title}" />` : form.title}
           </h1>
 
           {form.description && (
-            <p className={`${currentTheme.sub}`} style={{ fontSize: 17, lineHeight: 1.7, fontWeight: 400, marginBottom: 34, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
+            <p className={`${currentTheme.sub}`} style={{ fontSize: 17, lineHeight: 1.7, fontWeight: 400, marginBottom: 34, fontFamily: currentTheme.isVSCode ? "'Fira Code', monospace" : "'Plus Jakarta Sans',sans-serif" }}>
               {form.description}
             </p>
           )}
@@ -395,7 +505,7 @@ export default function PublicFormPage() {
 
               return (
                 <div key={field.id} className="field-wrap" style={{ animationDelay: `${index * 0.07}s` }}>
-                  <label className={`block mb-2 font-bold text-[16px] ${currentTheme.text}`} style={{ fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
+                  <label className={`block mb-2 font-bold text-[16px] ${currentTheme.text}`} style={{ fontFamily: currentTheme.isVSCode ? "'Fira Code', monospace" : "'Plus Jakarta Sans',sans-serif" }}>
                     {field.label}
                     {field.isRequired && <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>}
                   </label>
