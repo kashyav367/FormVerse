@@ -18,7 +18,6 @@
 | 🚀 **Web Application** | [form-verse-web-6yyg.vercel.app](https://form-verse-web-6yyg.vercel.app) | Production Next.js 15 Web Client on Vercel |
 | ⚡ **Backend Express API** | [formverse-1.onrender.com](https://formverse-1.onrender.com) | Express tRPC & OpenAPI Server on Render |
 | 📖 **Scalar API Reference** | [formverse-1.onrender.com/docs](https://formverse-1.onrender.com/docs) | Interactive Scalar OpenAPI Docs (18+ Procedures) |
-| 📄 **OpenAPI 3.0 Specification** | [formverse-1.onrender.com/openapi.json](https://formverse-1.onrender.com/openapi.json) | Raw OpenAPI 3.0 JSON Schema |
 
 ---
 
@@ -41,7 +40,7 @@ Use the pre-seeded demo account to explore full creator dashboard functionality 
 - **Normalized Querying**: Stores responses in primary JSON format while normalizing field answers into the `response_answers` EAV table (`value_text`, `value_number`, `value_json`) for real-time aggregation and analytics.
 - **Cascade Deletes & Integrity**: All forms, fields, submissions, and analytics events enforce `onDelete: "cascade"` foreign key relationships.
 
-### 🎨 10 Theme Presets (Glassmorphism & Ambient Light)
+### 🎨 Custom Theme Presets (Glassmorphism & Ambient Light)
 - 🕷️ **Spider-Man Web Suit** (Dark Red & Web Blue)
 - 🦸‍♂️ **Superman Shield** (Metropolis Royal Blue & Gold)
 - 🥷 **Ninja Hattori** (Iga Ninja Shadow Navy)
@@ -159,13 +158,6 @@ FormVerse features auto-generated Scalar OpenAPI documentation for all 7 tRPC ro
 - 💾 **Export Router**: `/trpc/export.exportSubmissionsToCSV`
 
 Visit **[https://formverse-1.onrender.com/docs](https://formverse-1.onrender.com/docs)** to test endpoints live in your browser.
-
----
-
-## 👨‍💻 Developer
-
-**Ankit Kumar Singh**
-* **GitHub**: [@kashyav367](https://github.com/kashyav367)
 
 ---
 
