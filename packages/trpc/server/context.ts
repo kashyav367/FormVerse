@@ -24,7 +24,7 @@ export async function createContext({
     res,
     createCookie: createCookiesFactory(res),
     getCookie: getCookieFactory(req),
-    clearCookie: clearCookieFactory(req),
+    clearCookie: clearCookieFactory(res),
     user: undefined,
   };
 
